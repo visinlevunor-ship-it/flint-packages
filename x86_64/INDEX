@@ -1,0 +1,11 @@
+timestamp: 1794431748
+
+name: fastfetch
+version: 2.71.0
+arch: x86_64
+description: Shows system information next to a logo
+config: etc/xdg/fastfetch/config.jsonc
+file: fastfetch-2.71.0.fpk
+size: 2650624
+sha256: 9ba01a2830ddef58d7900c083f4458004f68e7b0213bfd26dc35bf3efb031fca
+
