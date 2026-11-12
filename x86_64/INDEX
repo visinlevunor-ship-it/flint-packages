@@ -1,11 +1,280 @@
-timestamp: 1794431748
+timestamp: 1794503469
+
+name: bash
+version: 5.3
+arch: x86_64
+description: GNU Bourne-Again shell
+file: bash-5.3.fpk
+size: 716596
+sha256: 32169e1e927f7b4fd1a4bcee7d86524e86244fa17d30eb0709f136b29c74cc53
+
+name: bat
+version: 0.26.1
+arch: x86_64
+description: cat with syntax highlighting and Git integration
+file: bat-0.26.1.fpk
+size: 3324672
+sha256: 2947429bb6cada13e8202c4511d9bb779aa9f99f8a1c68d3bb2c2e212334ec0b
+
+name: btop
+version: 1.4.7
+arch: x86_64
+description: Resource monitor: processes, CPU, memory, disks and network, with graphs
+file: btop-1.4.7.fpk
+size: 944242
+sha256: 1c97b89c587c7141ec9ef1b45557ef64ea7d716c4db40da94932a7a22e67274c
+
+name: ca-certificates
+version: 20260816
+arch: x86_64
+description: Trusted certificate authorities (Mozilla's list) for TLS
+file: ca-certificates-20260816.fpk
+size: 108371
+sha256: e9fa529b968ecd76200bf7260184a269d6eab67c158de3e8fd78ee717cb04fa8
+
+name: curl
+version: 8.23.0
+arch: x86_64
+description: Transfer data with URLs (HTTP, HTTPS, FTP, ...)
+depends: ca-certificates
+file: curl-8.23.0.fpk
+size: 664251
+sha256: f42bcd65cd0dcd251b3bda8b7731cf4122d80dabbbdc8f7562e5ed4400e7659c
+
+name: dust
+version: 1.2.7
+arch: x86_64
+description: Intuitive du: what takes the space, as a tree
+file: dust-1.2.7.fpk
+size: 1201647
+sha256: 5eb667170e1b2af736a7ab4be703d9bf5c87f7af410548654e8b6a54fcffe47f
+
+name: eza
+version: 0.23.5
+arch: x86_64
+description: Modern ls with colors, icons and a tree view
+file: eza-0.23.5.fpk
+size: 1268117
+sha256: 98509b830c3928fdba965c0d529c553e3710deb6546bb76c447a3e2d56f36f69
 
 name: fastfetch
-version: 2.71.0
+version: 2.71.0-1
 arch: x86_64
 description: Shows system information next to a logo
 config: etc/xdg/fastfetch/config.jsonc
-file: fastfetch-2.71.0.fpk
-size: 2650624
-sha256: 9ba01a2830ddef58d7900c083f4458004f68e7b0213bfd26dc35bf3efb031fca
+file: fastfetch-2.71.0-1.fpk
+size: 957892
+sha256: 9f634b9b1dc11ccbaa4597fc5a7182cc623be9c90ed1f57d246952a755ebc058
+
+name: fd
+version: 10.5.2
+arch: x86_64
+description: Simple, fast alternative to find
+file: fd-10.5.2.fpk
+size: 1620450
+sha256: 230da4595f3ab5f1567e445f36c5aad6ce16f367710909a06c52296d4f3158e2
+
+name: fzf
+version: 0.75.0
+arch: x86_64
+description: Fuzzy finder for files, history and anything else (Ctrl-R, Ctrl-T)
+file: fzf-0.75.0.fpk
+size: 1959160
+sha256: c6fcb21f518384166e2229f6d3919a4e4916621c5dd65f530ef3f7da5d972ad2
+
+name: git
+version: 2.55.0
+arch: x86_64
+description: Distributed version control system
+depends: ca-certificates
+file: git-2.55.0.fpk
+size: 7222777
+sha256: e8b9e092970d6b20a8083e0c7f07ebf1b0ff65869de2c8bd546d2cc0d6544d45
+
+name: htop
+version: 3.5.3
+arch: x86_64
+description: Interactive process viewer
+file: htop-3.5.3.fpk
+size: 265815
+sha256: 79574301db711a70d85dd0a049fc8e60b9fbcc429a9395a8d4f8f811502c8f3e
+
+name: hyperfine
+version: 2.0.0
+arch: x86_64
+description: Command-line benchmarking
+file: hyperfine-2.0.0.fpk
+size: 681799
+sha256: cfefd7f2706e5c6f4e6386d6c4185a25ce868a396db7e20c2cfaf252ba12e961
+
+name: jq
+version: 1.8.2
+arch: x86_64
+description: Command-line JSON processor
+file: jq-1.8.2.fpk
+size: 348663
+sha256: df31c9833c7e140c23d867c9c30564da653391b91a9a3910e973a10d299333ff
+
+name: libarchive
+version: 3.8.11
+arch: x86_64
+description: Archive tools: bsdtar (tar/zip/7z/iso), bsdunzip, bsdcpio, bsdcat
+file: libarchive-3.8.11.fpk
+size: 1308912
+sha256: 8efbf52e753bc6f31a52766354d6d7ce52670dcedfa7c877f3899524cf014fc3
+
+name: lua
+version: 5.4.9
+arch: x86_64
+description: Lua 5.4 scripting language (lua, luac)
+file: lua-5.4.9.fpk
+size: 510429
+sha256: 5139e7834002ff0294197da4e69b9ddc1b5725d1ac2456d19c23de28d5198ab8
+
+name: make
+version: 4.4.1
+arch: x86_64
+description: GNU make: build automation
+file: make-4.4.1.fpk
+size: 157233
+sha256: 19b13f0a92f20004233083fc52be3040e1c5ea9fa836bb6e5508c918b368aa03
+
+name: micro
+version: 2.0.15
+arch: x86_64
+description: Modern terminal text editor: mouse, Ctrl-S/Ctrl-C/Ctrl-V, syntax highlighting
+file: micro-2.0.15.fpk
+size: 5251031
+sha256: 904af9e0166eebf36282c0466040f6ea5005df08d9801e407ac5fb37cf10fb0f
+
+name: nano
+version: 9.3
+arch: x86_64
+description: Simple, friendly terminal text editor
+config: etc/nanorc
+file: nano-9.3.fpk
+size: 345820
+sha256: f302978c34bd393dddaddfbf261cfb40580e2f0fe8c1932a2a4474c0616caef6
+
+name: ncdu
+version: 1.22
+arch: x86_64
+description: Disk usage browser for the terminal
+file: ncdu-1.22.fpk
+size: 164234
+sha256: 06f72aae82243d2822249880b29781f23cc663334f60892dd25fb462dce7bfba
+
+name: neovim
+version: 0.12.4
+arch: x86_64
+description: Vim-based text editor: Lua plugins, tree-sitter highlighting, LSP
+file: neovim-0.12.4.fpk
+size: 9588144
+sha256: 5854a1f657c2afae54b9cac5a17ee305b406a633774aed6f14e60c6f475d18fb
+
+name: openssh
+version: 10.5p1
+arch: x86_64
+description: Secure shell client: ssh, scp, sftp, ssh-keygen, ssh-agent
+config: etc/ssh/ssh_config
+file: openssh-10.5p1.fpk
+size: 1685988
+sha256: 5328c7b91eca2fbbb93de23b72435a25e7191117c58e5f656efa86798ace277a
+
+name: procs
+version: 0.14.12
+arch: x86_64
+description: Modern ps with colors and search
+file: procs-0.14.12.fpk
+size: 2278135
+sha256: 966be61e5368ee18815f2db70d7ba4451bc792142bfbee6610e5dee759692ea9
+
+name: ripgrep
+version: 15.2.0
+arch: x86_64
+description: Fast recursive search (rg), respects .gitignore
+file: ripgrep-15.2.0.fpk
+size: 2024816
+sha256: 45c7e0f67e0178596379555eeb569f1a388c881fe279dfd80f025a884077a28e
+
+name: rsync
+version: 3.5.2
+arch: x86_64
+description: Fast, incremental file copying, locally and over ssh
+file: rsync-3.5.2.fpk
+size: 482985
+sha256: 09e08cfa6b11f4e8ac79c6020c05e9c579a36a28b270fcca6890b657dae122b2
+
+name: sd
+version: 1.0.0
+arch: x86_64
+description: Intuitive find and replace (sed for humans)
+file: sd-1.0.0.fpk
+size: 961773
+sha256: b7be61baa0e848b6c7c17b08ff3403b523060bff67f60b9de4dd8f302b759080
+
+name: strace
+version: 7.2
+arch: x86_64
+description: Trace the system calls and signals of a program
+file: strace-7.2.fpk
+size: 529000
+sha256: fe56c677e7e72e4a6d00ae312cc0464b990288c861c11cb19fd2bfe81eadb1b6
+
+name: tmux
+version: 3.8
+arch: x86_64
+description: Terminal multiplexer: several shells in one terminal, sessions that survive
+file: tmux-3.8.fpk
+size: 611163
+sha256: 0342de0b6730435254bb196155715ec16e208f44e4058c316bc53baf755d494d
+
+name: tokei
+version: 15.0.0
+arch: x86_64
+description: Count lines of code by language
+file: tokei-15.0.0.fpk
+size: 1613527
+sha256: d4819926e9fec30c099539096b1e269a0ebf3211336b853ec469eb016c9f4066
+
+name: tree
+version: 2.3.2
+arch: x86_64
+description: List directory contents as a tree
+file: tree-2.3.2.fpk
+size: 76185
+sha256: e982c5383a5769189eb25262f6190d4c609cade64b61b1ee8cf2bce2e4a498b4
+
+name: xz
+version: 5.8.4
+arch: x86_64
+description: XZ / LZMA compression (xz, unxz, xzcat)
+file: xz-5.8.4.fpk
+size: 201685
+sha256: d58dc999f4a896343da6c3f90596f9a2f5c679b128649e9d8d35e685966211e4
+
+name: zoxide
+version: 0.10.0
+arch: x86_64
+description: Smarter cd that remembers where you go (z)
+file: zoxide-0.10.0.fpk
+size: 544838
+sha256: aa94f50e2e6cf218f5fe6f746025a3aa879d1fb2ec010e7ec465e126d2e5ac6e
+
+name: zsh
+version: 5.9.2
+arch: x86_64
+description: Z shell: interactive shell with powerful completion
+config: etc/zsh/zshrc
+file: zsh-5.9.2.fpk
+size: 2245764
+sha256: 315b279201ff4ef6cfdef1c3f95884e25cc343b0ec17a64064396f49d10fd911
+
+name: zstd
+version: 1.5.7
+arch: x86_64
+description: Zstandard: fast compression (zstd, unzstd, zstdcat)
+file: zstd-1.5.7.fpk
+size: 348079
+sha256: 3a8c5e02406fd2a543c27f63f4d825d013d5b69b469ebbd7088cf131d90be9d0
 
