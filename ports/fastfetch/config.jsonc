@@ -2,10 +2,8 @@
 // to change them for one user.
 {
     "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+    // Flint's logo is built in (fastfetch --logo small for the small one)
     "logo": {
-        "type": "file",
-        "source": "/usr/share/fastfetch/flint-logo.txt",
-        "color": { "1": "white", "2": "red", "3": "yellow" },
         "padding": { "right": 2 }
     },
     "modules": [

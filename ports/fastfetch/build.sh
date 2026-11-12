@@ -33,6 +33,15 @@ MUSLINC=$(dirname "$(musl-gcc -print-file-name=include/string.h 2>/dev/null)")
 [ -f "$MUSLINC/string.h" ] || MUSLINC=/usr/include/x86_64-linux-musl
 sed '/^char \*basename();$/d' "$MUSLINC/string.h" > "$KH/string.h"
 
+# Flint's logos, built in: fastfetch picks them from /etc/os-release (ID=flint), and
+# `fastfetch --logo small` shows the small one.
+cp "$HERE/flint.txt" "$WORK/src/src/logo/ascii/f/flint.txt"
+cp "$HERE/flint_small.txt" "$WORK/src/src/logo/ascii/f/flint_small.txt"
+if ! grep -q FASTFETCH_DATATEXT_LOGO_FLINT "$WORK/src/src/logo/ascii/f.inc"; then
+    awk -v inc="$HERE/flint-logo.inc" '/^    #ifdef FASTFETCH_DATATEXT_LOGO_FLOFLIS$/ { while ((getline l < inc) > 0) print l } { print }' \
+        "$WORK/src/src/logo/ascii/f.inc" > "$WORK/f.inc" && mv "$WORK/f.inc" "$WORK/src/src/logo/ascii/f.inc"
+    grep -q FASTFETCH_DATATEXT_LOGO_FLINT "$WORK/src/src/logo/ascii/f.inc" || { echo "could not add the Flint logo" >&2; exit 1; }
+fi
 B="$WORK/build"
 mkdir -p "$B"
 cp "$WORK/pci.ids" "$B/pci.ids"
@@ -49,11 +58,10 @@ ninja -C "$B" fastfetch >/dev/null
 "$B/fastfetch" --version
 
 rm -rf "$OUT"
-mkdir -p "$OUT/files/usr/bin" "$OUT/files/usr/share/licenses/fastfetch" "$OUT/files/usr/share/fastfetch" "$OUT/files/etc/xdg/fastfetch"
+mkdir -p "$OUT/files/usr/bin" "$OUT/files/usr/share/licenses/fastfetch" "$OUT/files/etc/xdg/fastfetch"
 cp "$HERE/control" "$OUT/control"
 install -m 755 "$B/fastfetch" "$OUT/files/usr/bin/fastfetch"
 strip "$OUT/files/usr/bin/fastfetch" 2>/dev/null || true
 install -m 644 "$WORK/src/LICENSE" "$OUT/files/usr/share/licenses/fastfetch/LICENSE"
-install -m 644 "$HERE/flint-logo.txt" "$OUT/files/usr/share/fastfetch/flint-logo.txt"
 install -m 644 "$HERE/config.jsonc" "$OUT/files/etc/xdg/fastfetch/config.jsonc"
 echo "staged $OUT"
