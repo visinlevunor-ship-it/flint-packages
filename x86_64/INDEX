@@ -1,4 +1,4 @@
-timestamp: 1794510974
+timestamp: 1794511656
 
 name: bash
 version: 5.3
@@ -73,6 +73,97 @@ description: Simple, fast alternative to find
 file: fd-10.5.2.fpk
 size: 1620450
 sha256: 230da4595f3ab5f1567e445f36c5aad6ce16f367710909a06c52296d4f3158e2
+
+name: flint-firmware
+version: 1.0.202611121926
+arch: x86_64
+description: Device firmware (network, Wi-Fi, storage, ...)
+depends: flint-firmware-1=1.0.202611121926, flint-firmware-2=1.0.202611121926, flint-firmware-3=1.0.202611121926
+file: flint-firmware-1.0.202611121926.fpk
+size: 336
+sha256: 16ea435ac18b745d73a5104dd4e129702f08ea5bf0d753c788f7651487d620df
+
+name: flint-firmware-1
+version: 1.0.202611121926
+arch: x86_64
+description: Device firmware (network, Wi-Fi, storage, ...) (part 1)
+file: flint-firmware-1-1.0.202611121926.fpk
+size: 43412556
+sha256: ed90023809d50f5a970f62b49b5e7cbb65a0a7b787877474fad1ec6f9a5f8a8c
+
+name: flint-firmware-2
+version: 1.0.202611121926
+arch: x86_64
+description: Device firmware (network, Wi-Fi, storage, ...) (part 2)
+file: flint-firmware-2-1.0.202611121926.fpk
+size: 34760541
+sha256: 0ea0a2da4617949b7d1dddce49c1a98badf8eeb7e999aaa8ee9d6929b5a195aa
+
+name: flint-firmware-3
+version: 1.0.202611121926
+arch: x86_64
+description: Device firmware (network, Wi-Fi, storage, ...) (part 3)
+file: flint-firmware-3-1.0.202611121926.fpk
+size: 28113158
+sha256: 0e9de1483943c056341ed46c1b9d7980b2503874a1fb5364407e17878e4ba37e
+
+name: flint-gpu-firmware
+version: 1.0.202611121926
+arch: x86_64
+description: Graphics firmware (AMD, Intel)
+depends: flint-gpu-firmware-1=1.0.202611121926, flint-gpu-firmware-2=1.0.202611121926
+file: flint-gpu-firmware-1.0.202611121926.fpk
+size: 325
+sha256: 44df68ff1aa70954812b8797cd28d10a35baccdd4c850b7a4032d4b87efcb95a
+
+name: flint-gpu-firmware-1
+version: 1.0.202611121926
+arch: x86_64
+description: Graphics firmware (AMD, Intel) (part 1)
+file: flint-gpu-firmware-1-1.0.202611121926.fpk
+size: 42158771
+sha256: d661ca324330090f3909b35e042a2464fe80c794c6d6bf35df92f1af8c2de5fe
+
+name: flint-gpu-firmware-2
+version: 1.0.202611121926
+arch: x86_64
+description: Graphics firmware (AMD, Intel) (part 2)
+file: flint-gpu-firmware-2-1.0.202611121926.fpk
+size: 3379532
+sha256: 18887321250fee4cc72767d4160b6f9277441f16f1ba359f6293412b017ca000
+
+name: flint-kernel
+version: 7.0.0-42-generic.202611121926
+arch: x86_64
+description: Linux 7.0.0-42-generic, the kernel Flint comes with, and its drivers
+depends: flint-kernel-1=7.0.0-42-generic.202611121926, flint-kernel-2=7.0.0-42-generic.202611121926
+file: flint-kernel-7.0.0-42-generic.202611121926.fpk
+size: 21832307
+sha256: 1303bcd9b6c96b73785cf3cb623dbee4d23275c5301e0ae8ae8a2a7e6e522cd0
+
+name: flint-kernel-1
+version: 7.0.0-42-generic.202611121926
+arch: x86_64
+description: Linux 7.0.0-42-generic, the kernel Flint comes with, and its drivers (part 1)
+file: flint-kernel-1-7.0.0-42-generic.202611121926.fpk
+size: 22199221
+sha256: f608c3b1d4d37db02e381bcebe00a5bf28d2a816e3ded4159467accdb2c6399d
+
+name: flint-kernel-2
+version: 7.0.0-42-generic.202611121926
+arch: x86_64
+description: Linux 7.0.0-42-generic, the kernel Flint comes with, and its drivers (part 2)
+file: flint-kernel-2-7.0.0-42-generic.202611121926.fpk
+size: 33008222
+sha256: 496fc5c0fa5b5726092dc9dce29342224f441a48066625140278b9fb9f28b484
+
+name: flint-system
+version: 1.0.202611121926
+arch: x86_64
+description: Flint Linux 1.0 base system and bootloader
+file: flint-system-1.0.202611121926.fpk
+size: 1636181
+sha256: e4fa1fa038ee7c42563918cd8330cb7003a7f6847c8fcad1a35823d945083617
 
 name: fzf
 version: 0.75.0
