@@ -1,4 +1,4 @@
-timestamp: 1794503469
+timestamp: 1794510974
 
 name: bash
 version: 5.3
@@ -58,13 +58,13 @@ size: 1268117
 sha256: 98509b830c3928fdba965c0d529c553e3710deb6546bb76c447a3e2d56f36f69
 
 name: fastfetch
-version: 2.71.0-1
+version: 2.71.0-2
 arch: x86_64
 description: Shows system information next to a logo
 config: etc/xdg/fastfetch/config.jsonc
-file: fastfetch-2.71.0-1.fpk
-size: 957892
-sha256: 9f634b9b1dc11ccbaa4597fc5a7182cc623be9c90ed1f57d246952a755ebc058
+file: fastfetch-2.71.0-2.fpk
+size: 958000
+sha256: ca84fb552baf6520df0b010393274af60bd71f1e0ca1c24f4d7efbbb6589cce2
 
 name: fd
 version: 10.5.2
