@@ -1,4 +1,4 @@
-timestamp: 1794511656
+timestamp: 1794550780
 
 name: bash
 version: 5.3
@@ -41,6 +41,15 @@ file: curl-8.23.0.fpk
 size: 664251
 sha256: f42bcd65cd0dcd251b3bda8b7731cf4122d80dabbbdc8f7562e5ed4400e7659c
 
+name: dmenu
+version: 5.4
+arch: x86_64
+description: Menu for X: type to pick from a list (dmenu_run starts programs)
+depends: xorg
+file: dmenu-5.4.fpk
+size: 1172753
+sha256: 9a058a8703c0da3d66f39e31880622003d307ad1711785313a13964226c5902c
+
 name: dust
 version: 1.2.7
 arch: x86_64
@@ -48,6 +57,24 @@ description: Intuitive du: what takes the space, as a tree
 file: dust-1.2.7.fpk
 size: 1201647
 sha256: 5eb667170e1b2af736a7ab4be703d9bf5c87f7af410548654e8b6a54fcffe47f
+
+name: dwm
+version: 6.8
+arch: x86_64
+description: dwm, the tiling window manager, as suckless ships it
+depends: xorg, dmenu
+file: dwm-6.8.fpk
+size: 1165799
+sha256: 89f2e99c62bcc653d75db1aa74a06028fd8437f1ab685506de1859499fae8429
+
+name: dwm-flint
+version: 6.8
+arch: x86_64
+description: dwm set up for Flint: gaps, Super keys, gold on black, JetBrains Mono, a status bar
+depends: xorg, dmenu, fonts-jetbrains-mono
+file: dwm-flint-6.8.fpk
+size: 1786294
+sha256: b343e7614b08842af8283aef5295049aa0eb5e41d057cf79cb90862ec153d1c2
 
 name: eza
 version: 0.23.5
@@ -164,6 +191,14 @@ description: Flint Linux 1.0 base system and bootloader
 file: flint-system-1.0.202611121926.fpk
 size: 1636181
 sha256: e4fa1fa038ee7c42563918cd8330cb7003a7f6847c8fcad1a35823d945083617
+
+name: fonts-jetbrains-mono
+version: 2.304
+arch: x86_64
+description: JetBrains Mono, a monospaced font for code and terminals
+file: fonts-jetbrains-mono-2.304.fpk
+size: 668186
+sha256: 4d8c3d4a386ed5b64b28cced1f0f8204213b81d497d6fa20780a353b307311a1
 
 name: fzf
 version: 0.75.0
@@ -304,6 +339,24 @@ file: sd-1.0.0.fpk
 size: 961773
 sha256: b7be61baa0e848b6c7c17b08ff3403b523060bff67f60b9de4dd8f302b759080
 
+name: st
+version: 0.9.3
+arch: x86_64
+description: st, the suckless terminal, as suckless ships it
+depends: xorg
+file: st-0.9.3.fpk
+size: 1185589
+sha256: 57df7ac5e50286990fde0df6949a32afeaf7b448a22b8ee59e17e372cba41e38
+
+name: st-flint
+version: 0.9.3
+arch: x86_64
+description: st set up for Flint: scrollback, JetBrains Mono, Flint's colors
+depends: xorg, fonts-jetbrains-mono
+file: st-flint-0.9.3.fpk
+size: 1186906
+sha256: f263741e2daf41e560e737c5c2c3fce32ea09bd69ac99d788ba67ef29df2afa5
+
 name: strace
 version: 7.2
 arch: x86_64
@@ -335,6 +388,15 @@ description: List directory contents as a tree
 file: tree-2.3.2.fpk
 size: 76185
 sha256: e982c5383a5769189eb25262f6190d4c609cade64b61b1ee8cf2bce2e4a498b4
+
+name: xorg
+version: 21.1.26
+arch: x86_64
+description: X.Org X server with built-in modesetting and libinput drivers, keyboard layouts, startx
+config: etc/X11/xinit/xinitrc, etc/fonts/fonts.conf
+file: xorg-21.1.26.fpk
+size: 5308054
+sha256: 7f99067f4c8b0c69504ed153037c6fbce4c02dbf6badb552ce35e6b9c9b0f1b6
 
 name: xz
 version: 5.8.4
