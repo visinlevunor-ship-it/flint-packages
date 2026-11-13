@@ -9,7 +9,8 @@ pkg index x86_64/ && pkg sign x86_64/ ~/flint-keys/flint.key
 ```
 
 Every program is built **static** for x86-64 with musl, so a package needs nothing else on the
-system to run.
+system to run. The exception is software that only ships built for glibc (Firefox): those
+packages hold Ubuntu's own binaries, which Flint runs with flint-glibc (Flint 1.1 and later).
 
 ## Where sources come from
 
@@ -21,6 +22,11 @@ Every source is pinned, and a recipe refuses anything that doesn't match:
   `Cargo.lock` (`--locked`). Cargo checks every crate's SHA-256.
 - **Go programs:** GitHub at a tagged release, with the tag's commit checked. Modules are
   verified against the program's `go.sum`.
+- **Programs built for glibc:** Ubuntu's binary packages (`.deb`), each pinned by SHA-256 in
+  the recipe or in a list beside it (`ports/NAME/debs`, made by `ports/deb-closure.py`, which
+  follows the dependencies). `deb_unpack` and `deb_unpack_list` fetch and unpack them; set
+  `GLIBC=1` so `ports_package` accepts their binaries. Their libraries live in
+  `/usr/lib/x86_64-linux-gnu`, which Flint's own programs never use.
 
 ## What a build host needs
 
@@ -34,6 +40,8 @@ A Linux machine (configure scripts run what they compile) with:
 - **go** and **git** for the Go ports
 - for the X11 ports (xorg, dwm, st, dmenu): **meson**, **ninja** and **python3**; the X
   libraries they share are built once and kept in `~/.cache/flint-ports`
+- for the glibc ports (gtk3-runtime, firefox): **ar** and **glib-compile-schemas**
+  (Ubuntu: `libglib2.0-bin`)
 - for `kernels/`: a built [flint-linux](https://github.com/visinlevunor-ship-it/flint-linux)
   checkout (`FLINT=/path/to/flint-linux`)
 
@@ -56,3 +64,8 @@ Copy a recipe close to what you need:
 The steps are: `ports_init NAME OUTDIR`, any `lib_*` it needs, the build into `$STAGE`, then
 `ports_package VERSION "description" [config files]`. Put the program's license in
 `$STAGE/usr/share/licenses/NAME/`.
+
+A package that would be over 50 MB compressed calls `ports_split MAX_KIB` after
+`ports_package`: it moves files into NAME-1, NAME-2... (separate directories next to OUTDIR)
+and makes NAME depend on them, since GitHub refuses files over 100 MB. Run `pkg build` on
+each of those directories.

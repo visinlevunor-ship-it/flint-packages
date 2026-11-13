@@ -1,0 +1,10 @@
+#!/bin/sh
+# Firefox is built for glibc: flint-glibc (Flint 1.1 and later) runs it.
+if [ ! -x /lib64/ld-linux-x86-64.so.2 ]; then
+    echo "firefox: this Flint has no flint-glibc (/lib64/ld-linux-x86-64.so.2); update Flint first" >&2
+    exit 1
+fi
+# no D-Bus session on Flint: GTK keeps its settings in ~/.config/glib-2.0/settings/keyfile
+export GSETTINGS_BACKEND=${GSETTINGS_BACKEND:-keyfile}
+export MOZ_CRASHREPORTER_DISABLE=1
+exec /usr/lib/firefox/firefox "$@"

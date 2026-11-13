@@ -1,0 +1,1 @@
+ports/deb-closure.py --exclude fontconfig,fontconfig-config,libx11-data,xkb-data,humanity-icon-theme,ubuntu-mono,dconf-gsettings-backend,libdconf1 libgtk-3-0t64 libdbus-glib-1-2 libasound2t64 libx11-xcb1 libxcomposite1 libxcursor1 libxdamage1 libxi6 libxrandr2 libxrender1 libxext6 libxfixes3 libxcb-shm0 libstdc++6 libgcc-s1 libpci3 fonts-dejavu-core > ports/gtk3-runtime/debs

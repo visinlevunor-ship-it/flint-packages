@@ -135,10 +135,13 @@ ports_init() { # NAME OUTDIR
 }
 
 # The package source tree: OUT/control and OUT/files (= $STAGE, stripped).
+# With GLIBC=1 the files are Ubuntu's prebuilt ones (deb_unpack_list): left as they are, and
+# programs may name glibc's loader (flint-glibc) as their interpreter.
 ports_package() { # VERSION DESCRIPTION [CONFIG-FILE...]
     version=$1 desc=$2
     shift 2
     for f in $(find "$STAGE" -type f -perm -u+x); do
+        [ -n "${GLIBC:-}" ] && break
         if head -c 4 "$f" | grep -q 'ELF'; then
             strip "$f" 2>/dev/null || true
             if file "$f" | grep -q 'dynamically linked'; then
@@ -159,6 +162,104 @@ ports_package() { # VERSION DESCRIPTION [CONFIG-FILE...]
         [ $# -gt 0 ] && echo "config: $(echo "$*" | sed 's/ /, /g')"
     } > "$OUT/control"
     say "staged $NAME $version in $OUT (pkg build $OUT REPO)"
+}
+
+# ports_split MAX_KIB: a package too big for one file in git (GitHub refuses files over
+# 100 MB) is split: OUT-1, OUT-2... (packages NAME-1, NAME-2...) take whole files and
+# directories up to MAX_KIB compressed each, and NAME keeps the rest and depends on them at
+# its own version, so installing NAME brings everything. Configuration files stay in NAME.
+# Build each directory with pkg build.
+ports_split() { # MAX_KIB
+    max=$1
+    configs=$(sed -n 's/^config: //p' "$OUT/control" | tr ',' '\n' | sed 's/^ *\/*//')
+    version=$(sed -n 's/^version: //p' "$OUT/control")
+    desc=$(sed -n 's/^description: //p' "$OUT/control")
+    gzkib() { tar -cf - -C "$OUT/files" "$1" 2>/dev/null | gzip -6 | wc -c | awk '{print int(($1 + 1023) / 1024)}'; }
+    # units: paths (relative to files/) small enough for a part
+    : > "$WORK/units"
+    walk() {
+        holds_config=""
+        for c in $configs; do
+            [ "$c" = "$1" ] && return 0
+            case "$c" in "$1"/*) holds_config=1 ;; esac
+        done
+        k=$(gzkib "$1")
+        if { [ "$k" -gt "$max" ] || [ -n "$holds_config" ]; } && [ -d "$OUT/files/$1" ]; then
+            for e in $(cd "$OUT/files/$1" && ls -A | LC_ALL=C sort); do walk "$1/$e"; done
+        else
+            [ "$k" -gt 95000 ] && die "$1 is $k KiB compressed: too big for one package"
+            printf '%s\t%s\n' "$k" "$1" >> "$WORK/units"
+        fi
+    }
+    for e in $(cd "$OUT/files" && ls -A | LC_ALL=C sort); do walk "$e"; done
+    total=$(awk -F'\t' '{s += $1} END {print s + 0}' "$WORK/units")
+    [ "$total" -le "$max" ] && return 0
+    # biggest first, into the first part with room
+    sort -rn "$WORK/units" > "$WORK/units.sorted"
+    n=0
+    deps=""
+    while IFS="$(printf '\t')" read -r k rel; do
+        i=1 placed=""
+        while [ "$i" -le "$n" ]; do
+            used=$(cat "$WORK/part$i.kib")
+            if [ $((used + k)) -le "$max" ]; then placed=$i; break; fi
+            i=$((i + 1))
+        done
+        if [ -z "$placed" ]; then
+            n=$((n + 1))
+            placed=$n
+            echo 0 > "$WORK/part$n.kib"
+            rm -rf "$OUT-$n"
+            mkdir -p "$OUT-$n/files"
+            printf 'name: %s\nversion: %s\ndescription: %s (part %s)\narch: x86_64\n' "$NAME-$n" "$version" "$desc" "$n" > "$OUT-$n/control"
+            deps="${deps:+$deps, }$NAME-$n=$version"
+        fi
+        echo $(( $(cat "$WORK/part$placed.kib") + k )) > "$WORK/part$placed.kib"
+        mkdir -p "$(dirname "$OUT-$placed/files/$rel")"
+        mv "$OUT/files/$rel" "$OUT-$placed/files/$rel"
+    done < "$WORK/units.sorted"
+    # NAME itself: a small file naming its parts, so it is never empty
+    mkdir -p "$OUT/files/usr/share/licenses/$NAME"
+    printf '%s\n' "$n" > "$OUT/files/usr/share/licenses/$NAME/parts"
+    if grep -q '^depends: ' "$OUT/control"; then
+        sed -i.bak "s/^depends: \(.*\)/depends: \1, $deps/" "$OUT/control" && rm -f "$OUT/control.bak"
+    else
+        printf 'depends: %s\n' "$deps" >> "$OUT/control"
+    fi
+    say "split $NAME into $n parts ($OUT-1 ... $OUT-$n) and $OUT"
+}
+
+# ---- Ubuntu binary packages (programs built for glibc, run by flint-glibc) ----------------
+
+# deb_unpack_list LIST [DEST]: fetch each package LIST names ("POOL_PATH SHA256 NAME VERSION"
+# lines, made by ports/deb-closure.py) and unpack its files into DEST (default $STAGE).
+# Documentation is dropped; each package's copyright file goes to
+# /usr/share/licenses/$NAME/PACKAGE.
+deb_unpack_list() { # LIST [DEST]
+    dest=${2:-$STAGE}
+    while read -r pool sum pkg ver; do
+        case "$pool" in ''|'#'*) continue ;; esac
+        deb_unpack "$pool" "$sum" "$dest"
+    done < "$1"
+}
+
+deb_unpack() { # POOL_PATH SHA256 [DEST]
+    f=$(fetch "$1" "$2")
+    dest=${3:-$STAGE}
+    d="$WORK/deb/$(basename "$1" .deb)"
+    rm -rf "$d"
+    mkdir -p "$d/x"
+    (cd "$d" && ar x "$f") || die "cannot read $(basename "$1")"
+    tar -xf "$d"/data.tar.* -C "$d/x" || die "cannot unpack $(basename "$1")"
+    pkg=$(basename "$1" | cut -d_ -f1)
+    if [ -f "$d/x/usr/share/doc/$pkg/copyright" ]; then
+        mkdir -p "$dest/usr/share/licenses/$NAME"
+        cp "$d/x/usr/share/doc/$pkg/copyright" "$dest/usr/share/licenses/$NAME/$pkg"
+    fi
+    rm -rf "$d/x/usr/share/doc" "$d/x/usr/share/man" "$d/x/usr/share/lintian" "$d/x/usr/share/bug" \
+        "$d/x/usr/share/info" "$d/x/usr/share/doc-base"
+    (cd "$d/x" && tar -cf - .) | (cd "$dest" && tar -xf -)
+    rm -rf "$d"
 }
 
 # ---- libraries, built into $SYSROOT ----------------------------------------------------

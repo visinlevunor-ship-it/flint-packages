@@ -89,6 +89,21 @@ is its Ed25519 signature. pkg installs nothing unless that signature matches a k
 | dmenu | 5.4 | menu and program launcher |
 | fonts-jetbrains-mono | 2.304 | JetBrains Mono |
 
+**Programs built for glibc** (need Flint 1.1, which brings flint-glibc)
+
+| Package | Version | |
+|---|---|---|
+| firefox | 136.0 | Firefox, Ubuntu's build (in two parts, `firefox-1` and `firefox-2`) |
+| gtk3-runtime | 3.24.41 | GTK 3 and the libraries it needs, from Ubuntu 24.04 |
+
+```sh
+pkg install firefox              # with dwm-flint: Super+w, or `firefox`; it opens on tag 2
+```
+
+This Firefox is Ubuntu 20.04's last .deb build (later Ubuntu releases ship Firefox as a snap),
+so it gets no more security updates; it is the first step toward a Firefox kept current.
+Without a GPU driver for it yet, Firefox draws with the CPU.
+
 ```sh
 pkg install dwm-flint st-flint   # pulls in xorg, dmenu and the font
 startx                           # on a console (tty1, ...); Super+/ lists the keys
