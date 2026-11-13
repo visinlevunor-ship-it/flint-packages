@@ -1,0 +1,109 @@
+#!/bin/sh
+# startx: start the X server on this terminal, then a session on it.
+#
+#   startx               the session in ~/.xinitrc, or /etc/X11/xinit/xinitrc (dwm)
+#   startx PROGRAM ARGS  that program instead (st, say)
+#   XVT=2 startx         on virtual console 2 (when started from ssh or a serial line)
+#
+# Flint's Xorg has no udev, so this writes its configuration: the GPU through kernel
+# modesetting, and every input device through libinput. The keyboard layout comes from
+# XKB_LAYOUT (e.g. XKB_LAYOUT=pl startx), else /etc/X11/xkb-layout, else us.
+
+display=0
+while [ -e "/tmp/.X$display-lock" ] || [ -e "/tmp/.X11-unix/X$display" ]; do
+    display=$((display + 1))
+done
+
+# the virtual console to show it on: this one, or XVT (XVT=2 startx from ssh or a serial line)
+tty=$(readlink /proc/self/fd/0 2>/dev/null)
+case "${XVT:-}:$tty" in
+    [0-9]*:*) vt=${XVT} ;;
+    :/dev/tty[0-9]*) vt=${tty#/dev/tty} ;;
+    *) echo "startx: run it on a virtual console (tty1, tty2, ...), or set XVT; not on $tty" >&2; exit 1 ;;
+esac
+
+layout=${XKB_LAYOUT:-}
+[ -z "$layout" ] && [ -r /etc/X11/xkb-layout ] && layout=$(cat /etc/X11/xkb-layout)
+[ -z "$layout" ] && layout=us
+
+# keep the terminal when X runs on the one we are on (otherwise Xorg takes over vt$vt)
+keeptty=
+[ "$tty" = "/dev/tty$vt" ] && keeptty=-keeptty
+
+state=${XDG_STATE_HOME:-${HOME:-/tmp}/.local/state}/xorg
+mkdir -p "$state"
+conf="$state/xorg-$display.conf"
+{
+    echo 'Section "ServerFlags"'
+    echo '    Option "AutoAddDevices" "false"'
+    echo '    Option "AutoAddGPU" "false"'
+    echo 'EndSection'
+    echo 'Section "Device"'
+    echo '    Identifier "gpu"'
+    echo '    Driver "modesetting"'
+    echo 'EndSection'
+    echo 'Section "Screen"'
+    echo '    Identifier "screen"'
+    echo '    Device "gpu"'
+    echo 'EndSection'
+    echo 'Section "InputClass"'
+    echo '    Identifier "keyboard layout"'
+    echo '    MatchIsKeyboard "on"'
+    echo "    Option \"XkbLayout\" \"$layout\""
+    echo 'EndSection'
+    devices=""
+    for dev in /dev/input/event*; do
+        [ -e "$dev" ] || continue
+        id=${dev##*/}
+        echo 'Section "InputDevice"'
+        echo "    Identifier \"$id\""
+        echo '    Driver "libinput"'
+        echo "    Option \"Device\" \"$dev\""
+        echo '    Option "XkbRules" "evdev"'   # without hotplugging Xorg would pick "base" (wrong keycodes)
+        echo "    Option \"XkbLayout\" \"$layout\""
+        echo '    Option "Tapping" "on"'
+        echo '    Option "NaturalScrolling" "false"'
+        echo 'EndSection'
+        devices="$devices $id"
+    done
+    echo 'Section "ServerLayout"'
+    echo '    Identifier "flint"'
+    echo '    Screen "screen"'
+    for id in $devices; do
+        echo "    InputDevice \"$id\" \"SendCoreEvents\""
+    done
+    echo 'EndSection'
+} > "$conf"
+
+Xorg ":$display" "vt$vt" -config "$conf" $keeptty -noreset -nolisten tcp \
+    -logfile "$state/Xorg.$display.log" >/dev/null 2>&1 &
+server=$!
+
+# wait for the server's socket
+n=0
+while [ ! -e "/tmp/.X11-unix/X$display" ]; do
+    if ! kill -0 "$server" 2>/dev/null; then
+        echo "startx: the X server stopped; see $state/Xorg.$display.log" >&2
+        exit 1
+    fi
+    n=$((n + 1))
+    if [ "$n" -gt 30 ]; then
+        echo "startx: the X server did not start; see $state/Xorg.$display.log" >&2
+        kill "$server" 2>/dev/null
+        exit 1
+    fi
+    sleep 1
+done
+
+export DISPLAY=":$display"
+if [ $# -gt 0 ]; then
+    "$@"
+elif [ -f "$HOME/.xinitrc" ]; then
+    sh "$HOME/.xinitrc"
+else
+    sh /etc/X11/xinit/xinitrc
+fi
+status=$?
+kill "$server" 2>/dev/null
+wait "$server" 2>/dev/null
+exit $status

@@ -1,0 +1,14 @@
+#!/bin/sh
+# Flint's default X session (startx runs it). Copy it to ~/.xinitrc to make your own.
+
+# the status bar (dwm-flint): battery, network, CPU, memory, time
+if [ -x /usr/bin/flint-status ]; then
+    flint-status &
+fi
+
+# your own programs to start with the session
+if [ -x "$HOME/.config/flint/autostart" ]; then
+    "$HOME/.config/flint/autostart" &
+fi
+
+exec dwm

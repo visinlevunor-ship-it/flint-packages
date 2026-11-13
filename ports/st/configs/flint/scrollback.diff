@@ -1,0 +1,247 @@
+--- a/st.c
++++ b/st.c
+@@ -109,6 +109,8 @@
+ 	int alt;
+ } Selection;
+ 
++#define HISTSIZE 10000 /* Flint: lines of scrollback */
++
+ /* Internal representation of the screen */
+ typedef struct {
+ 	int row;      /* nb row */
+@@ -128,8 +130,20 @@
+ 	int icharset; /* selected charset for sequence */
+ 	int *tabs;
+ 	Rune lastc;   /* last printed char outside of sequence, 0 if control */
++	/* Flint: scrollback. Lines that scroll off the top of the main screen go into a
++	 * ring; scr is how many lines the view is scrolled back into it. */
++	Line hist[HISTSIZE];
++	int histi;    /* newest line in hist */
++	int histn;    /* lines in hist */
++	int scr;      /* view offset, 0 = the live screen */
+ } Term;
+ 
++static void histpush(Line);
++
++/* the line shown on row y of the window (the live screen, or history while scrolled back) */
++#define TLINE(y) ((y) < term.scr ? term.hist[(term.histi - term.scr + 1 + (y) + HISTSIZE) % HISTSIZE] \
++                                 : term.line[(y) - term.scr])
++
+ /* CSI Escape sequence structs */
+ /* ESC '[' [[ [<priv>] <arg> [;]] <mode> [<mode>]] */
+ typedef struct {
+@@ -409,10 +423,10 @@
+ {
+ 	int i = term.col;
+ 
+-	if (term.line[y][i - 1].mode & ATTR_WRAP)
++	if (TLINE(y)[i - 1].mode & ATTR_WRAP)
+ 		return i;
+ 
+-	while (i > 0 && term.line[y][i - 1].u == ' ')
++	while (i > 0 && TLINE(y)[i - 1].u == ' ')
+ 		--i;
+ 
+ 	return i;
+@@ -521,7 +535,7 @@
+ 		 * Snap around if the word wraps around at the end or
+ 		 * beginning of a line.
+ 		 */
+-		prevgp = &term.line[*y][*x];
++		prevgp = &TLINE(*y)[*x];
+ 		prevdelim = ISDELIM(prevgp->u);
+ 		for (;;) {
+ 			newx = *x + direction;
+@@ -536,14 +550,14 @@
+ 					yt = *y, xt = *x;
+ 				else
+ 					yt = newy, xt = newx;
+-				if (!(term.line[yt][xt].mode & ATTR_WRAP))
++				if (!(TLINE(yt)[xt].mode & ATTR_WRAP))
+ 					break;
+ 			}
+ 
+ 			if (newx >= tlinelen(newy))
+ 				break;
+ 
+-			gp = &term.line[newy][newx];
++			gp = &TLINE(newy)[newx];
+ 			delim = ISDELIM(gp->u);
+ 			if (!(gp->mode & ATTR_WDUMMY) && (delim != prevdelim
+ 					|| (delim && gp->u != prevgp->u)))
+@@ -564,14 +578,14 @@
+ 		*x = (direction < 0) ? 0 : term.col - 1;
+ 		if (direction < 0) {
+ 			for (; *y > 0; *y += direction) {
+-				if (!(term.line[*y-1][term.col-1].mode
++				if (!(TLINE(*y-1)[term.col-1].mode
+ 						& ATTR_WRAP)) {
+ 					break;
+ 				}
+ 			}
+ 		} else if (direction > 0) {
+ 			for (; *y < term.row-1; *y += direction) {
+-				if (!(term.line[*y][term.col-1].mode
++				if (!(TLINE(*y)[term.col-1].mode
+ 						& ATTR_WRAP)) {
+ 					break;
+ 				}
+@@ -602,13 +616,13 @@
+ 		}
+ 
+ 		if (sel.type == SEL_RECTANGULAR) {
+-			gp = &term.line[y][sel.nb.x];
++			gp = &TLINE(y)[sel.nb.x];
+ 			lastx = sel.ne.x;
+ 		} else {
+-			gp = &term.line[y][sel.nb.y == y ? sel.nb.x : 0];
++			gp = &TLINE(y)[sel.nb.y == y ? sel.nb.x : 0];
+ 			lastx = (sel.ne.y == y) ? sel.ne.x : term.col-1;
+ 		}
+-		last = &term.line[y][MIN(lastx, linelen-1)];
++		last = &TLINE(y)[MIN(lastx, linelen-1)];
+ 		while (last >= gp && last->u == ' ')
+ 			--last;
+ 
+@@ -845,6 +859,8 @@
+ {
+ 	const char *next;
+ 
++	if (may_echo && term.scr)
++		kscrolldown(&(Arg){ .i = 0 });
+ 	if (may_echo && IS_SET(MODE_ECHO))
+ 		twrite(s, n, 1);
+ 
+@@ -1051,6 +1067,7 @@
+ 	term.line = term.alt;
+ 	term.alt = tmp;
+ 	term.mode ^= MODE_ALTSCREEN;
++	term.scr = 0;
+ 	tfulldirt();
+ }
+ 
+@@ -1082,6 +1099,12 @@
+ 
+ 	LIMIT(n, 0, term.bot-orig+1);
+ 
++	if (orig == 0 && !IS_SET(MODE_ALTSCREEN)) {
++		for (i = 0; i < n; i++)
++			histpush(term.line[i]);
++		if (term.scr)
++			selclear(); /* the view stays put; the selection would move */
++	}
+ 	tclearregion(0, orig, term.col-1, orig+n-1);
+ 	tsetdirt(orig+n, term.bot);
+ 
+@@ -1094,6 +1117,59 @@
+ 	selscroll(orig, -n);
+ }
+ 
++static void
++histpush(Line l)
++{
++	term.histi = (term.histi + 1) % HISTSIZE;
++	if (!term.hist[term.histi])
++		term.hist[term.histi] = xmalloc(term.col * sizeof(Glyph));
++	memcpy(term.hist[term.histi], l, term.col * sizeof(Glyph));
++	if (term.histn < HISTSIZE)
++		term.histn++;
++	/* while scrolled back, keep showing the same lines */
++	if (term.scr)
++		term.scr = MIN(term.scr + 1, term.histn);
++}
++
++void
++kscrollup(const Arg *a)
++{
++	int n = a->i > 0 ? a->i : MAX(term.row - 2, 1);
++	int scr = MIN(term.scr + n, term.histn);
++
++	if (IS_SET(MODE_ALTSCREEN) || scr == term.scr)
++		return;
++	selclear();
++	term.scr = scr;
++	tfulldirt();
++}
++
++void
++kscrolldown(const Arg *a)
++{
++	int n = a->i > 0 ? a->i : a->i < 0 ? MAX(term.row - 2, 1) : term.scr;
++	int scr = MAX(term.scr - n, 0);
++
++	if (scr == term.scr)
++		return;
++	selclear();
++	term.scr = scr;
++	tfulldirt();
++}
++
++/* the mouse wheel: scrollback on the main screen; on the alternate screen (less, man)
++ * Ctrl+Y / Ctrl+E as st sends by default */
++void
++kscrollwheel(const Arg *a)
++{
++	if (IS_SET(MODE_ALTSCREEN))
++		ttywrite(a->i > 0 ? "\031" : "\005", 1, 0);
++	else if (a->i > 0)
++		kscrollup(a);
++	else
++		kscrolldown(&(Arg){ .i = -a->i });
++}
++
+ void
+ selscroll(int orig, int n)
+ {
+@@ -2625,6 +2701,18 @@
+ 		for (bp += tabspaces; bp < term.tabs + col; bp += tabspaces)
+ 			*bp = 1;
+ 	}
++	/* history lines take the new width (blank on the right when wider) */
++	if (col != term.col) {
++		for (i = 0; i < HISTSIZE; i++) {
++			if (!term.hist[i])
++				continue;
++			term.hist[i] = xrealloc(term.hist[i], col * sizeof(Glyph));
++			for (int x = term.col; x < col; x++)
++				term.hist[i][x] = (Glyph){ .u = ' ', .fg = defaultfg, .bg = defaultbg };
++		}
++	}
++	term.scr = 0;
++
+ 	/* update terminal size */
+ 	term.col = col;
+ 	term.row = row;
+@@ -2663,7 +2751,7 @@
+ 			continue;
+ 
+ 		term.dirty[y] = 0;
+-		xdrawline(term.line[y], x1, y, x2);
++		xdrawline(TLINE(y), x1, y, x2);
+ 	}
+ }
+ 
+@@ -2684,8 +2772,9 @@
+ 		cx--;
+ 
+ 	drawregion(0, 0, term.col, term.row);
+-	xdrawcursor(cx, term.c.y, term.line[term.c.y][cx],
+-			term.ocx, term.ocy, term.line[term.ocy][term.ocx]);
++	if (term.scr == 0)
++		xdrawcursor(cx, term.c.y, term.line[term.c.y][cx],
++				term.ocx, term.ocy, term.line[term.ocy][term.ocx]);
+ 	term.ocx = cx;
+ 	term.ocy = term.c.y;
+ 	xfinishdraw();
+--- a/st.h
++++ b/st.h
+@@ -79,6 +79,9 @@
+ 
+ void die(const char *, ...);
+ void redraw(void);
++void kscrollup(const Arg *);
++void kscrolldown(const Arg *);
++void kscrollwheel(const Arg *);
+ void draw(void);
+ 
+ void printscreen(const Arg *);

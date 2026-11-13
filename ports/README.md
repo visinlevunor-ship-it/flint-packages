@@ -32,11 +32,14 @@ A Linux machine (configure scripts run what they compile) with:
 - **cargo** for the Rust ports. If rustup has no `x86_64-unknown-linux-musl` target, std is
   built from source instead (needs the `rust-src` component).
 - **go** and **git** for the Go ports
+- for the X11 ports (xorg, dwm, st, dmenu): **meson**, **ninja** and **python3**; the X
+  libraries they share are built once and kept in `~/.cache/flint-ports`
 - for `kernels/`: a built [flint-linux](https://github.com/visinlevunor-ship-it/flint-linux)
   checkout (`FLINT=/path/to/flint-linux`)
 
 `common.sh` holds the shared parts: fetching and checking sources, the zig toolchain, the
-libraries several ports share (ncurses, zlib, mbedTLS, curl, libevent, popt) and the Rust and
+libraries several ports share (ncurses, zlib, mbedTLS, curl, libevent, popt, the X client
+libraries) and the Rust and
 Go build steps.
 
 ## Writing a new port

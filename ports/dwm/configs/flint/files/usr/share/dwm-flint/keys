@@ -1,0 +1,27 @@
+Super+Enter              terminal (st)
+Super+Shift+Enter        floating terminal
+Super+d                  run a program (dmenu)
+Super+w                  web browser
+Super+q                  close the window
+Super+Shift+e            leave dwm (back to the console)
+Super+/                  this list
+Super+j / k  (Down/Up)   focus the next / previous window
+Super+Shift+j / k        move the window down / up the stack
+Super+h / l  (Left/Right) master area smaller / larger
+Super+Space              swap the window with the master
+Super+i / Super+Shift+i  more / fewer windows in the master area
+Super+t                  tiling layout
+Super+m                  monocle layout (one window at a time)
+Super+Shift+f            floating layout
+Super+f                  fullscreen
+Super+Shift+Space        float / unfloat the window
+Super+b                  hide / show the bar
+Super+minus / equal      smaller / larger gaps (Super+Shift+equal resets)
+Super+1..9               go to tag 1..9
+Super+Shift+1..9         send the window to tag 1..9
+Super+Ctrl+1..9          show tag 1..9 as well
+Super+Tab                previous tag
+Super+0                  every tag at once
+Super+comma / period     focus the previous / next monitor
+Super+Shift+comma/period send the window to the previous / next monitor
+Super+drag               move a window (left button) / resize it (right button)

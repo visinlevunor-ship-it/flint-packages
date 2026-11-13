@@ -77,6 +77,36 @@ is its Ed25519 signature. pkg installs nothing unless that signature matches a k
 | zstd | 1.5.7 | Zstandard |
 | xz | 5.8.4 | XZ / LZMA |
 
+**Desktop (X11)**
+
+| Package | Version | |
+|---|---|---|
+| xorg | 21.1.26 | X server with built-in modesetting and libinput drivers; `startx`, keyboard layouts |
+| dwm-flint | 6.8 | dwm set up for Flint: gaps, Super keys, gold on black, status bar (`config-of: dwm`) |
+| dwm | 6.8 | dwm as suckless ships it (`config-of: dwm`) |
+| st-flint | 0.9.3 | st with scrollback, JetBrains Mono and Flint's colors (`config-of: st`) |
+| st | 0.9.3 | st as suckless ships it (`config-of: st`) |
+| dmenu | 5.4 | menu and program launcher |
+| fonts-jetbrains-mono | 2.304 | JetBrains Mono |
+
+```sh
+pkg install dwm-flint st-flint   # pulls in xorg, dmenu and the font
+startx                           # on a console (tty1, ...); Super+/ lists the keys
+pkg config install dwm           # switch to plain dwm, and back: pkg config install dwm-flint
+```
+
+X runs as the user who starts it: that user must be in the `video` and `input` groups
+(the `flint` user is, on images built after this change). On an older install, add these two lines to
+`/etc/group` as root and reboot:
+
+```
+video:x:44:flint
+input:x:105:flint
+```
+
+Rendering is done by the CPU (no OpenGL yet): fine for a tiling desktop, terminals and
+browsing, not for games.
+
 **Development**
 
 | Package | Version | |
@@ -100,6 +130,10 @@ pkg index x86_64/                        # update INDEX
 pkg sign x86_64/ ~/flint-keys/flint.key  # sign it (after every index)
 git add -A && git commit && git push
 ```
+
+dwm and st are configured by recompiling, so each configuration is a package of its own, built
+from `ports/dwm/configs/NAME` (or `ports/st/configs/NAME`): `ports/dwm/build.sh /tmp/dwm-flint flint`.
+Add a directory there to publish another configuration; `pkg config install dwm-NAME` swaps it in.
 
 Kernel packages need a built flint-linux checkout:
 
