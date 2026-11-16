@@ -1,4 +1,4 @@
-timestamp: 1794550780
+timestamp: 1794858204
 
 name: bash
 version: 5.3
@@ -67,14 +67,14 @@ file: dwm-6.8.fpk
 size: 1165799
 sha256: 89f2e99c62bcc653d75db1aa74a06028fd8437f1ab685506de1859499fae8429
 
-name: dwm-flint
+name: dwm-1
 version: 6.8
 arch: x86_64
 description: dwm set up for Flint: gaps, Super keys, gold on black, JetBrains Mono, a status bar
 depends: xorg, dmenu, fonts-jetbrains-mono
-file: dwm-flint-6.8.fpk
-size: 1786294
-sha256: b343e7614b08842af8283aef5295049aa0eb5e41d057cf79cb90862ec153d1c2
+file: dwm-1-6.8.fpk
+size: 1786289
+sha256: 778b7907b84b760e714184cda3db02f2ab2832fa5ec9cc3e80ba966aaad3ef28
 
 name: eza
 version: 0.23.5
@@ -100,6 +100,32 @@ description: Simple, fast alternative to find
 file: fd-10.5.2.fpk
 size: 1620450
 sha256: 230da4595f3ab5f1567e445f36c5aad6ce16f367710909a06c52296d4f3158e2
+
+name: firefox
+version: 136.0-1
+arch: x86_64
+description: Firefox web browser (Ubuntu's build, run with flint-glibc)
+depends: gtk3-runtime, firefox-part1=136.0-1, firefox-part2=136.0-1
+config: etc/firefox/syspref.js
+file: firefox-136.0-1.fpk
+size: 553
+sha256: 09830924e492bb3bc97ad7d54de2191cd94d5a055be49621f20be7245e23c5ad
+
+name: firefox-part1
+version: 136.0-1
+arch: x86_64
+description: Firefox web browser (Ubuntu's build, run with flint-glibc) (part 1)
+file: firefox-part1-136.0-1.fpk
+size: 64667620
+sha256: 027fddf79ec10abf87ed0368e90d8ca8efc482937e1940955a75c78b20098354
+
+name: firefox-part2
+version: 136.0-1
+arch: x86_64
+description: Firefox web browser (Ubuntu's build, run with flint-glibc) (part 2)
+file: firefox-part2-136.0-1.fpk
+size: 34427092
+sha256: be8d64be5856994ec7cc5cd55b8b1ffca97d9a9de374b7f8a4c9cd6355f8b041
 
 name: flint-firmware
 version: 1.0.202611121926
@@ -217,6 +243,15 @@ file: git-2.55.0.fpk
 size: 7222777
 sha256: e8b9e092970d6b20a8083e0c7f07ebf1b0ff65869de2c8bd546d2cc0d6544d45
 
+name: gtk3-runtime
+version: 3.24.41-1
+arch: x86_64
+description: GTK 3 and its libraries from Ubuntu 24.04, for programs built for glibc
+depends: xorg
+file: gtk3-runtime-3.24.41-1.fpk
+size: 42628283
+sha256: 4cb4fb97d85c048c43ab68c0951ad656c53e3138c92f423070ae978bc046c472
+
 name: htop
 version: 3.5.3
 arch: x86_64
@@ -265,6 +300,31 @@ file: make-4.4.1.fpk
 size: 157233
 sha256: 19b13f0a92f20004233083fc52be3040e1c5ea9fa836bb6e5508c918b368aa03
 
+name: mesa-gl
+version: 25.2.8-1
+arch: x86_64
+description: Mesa OpenGL and Vulkan from Ubuntu 24.04, for programs built for glibc
+depends: gtk3-runtime, mesa-gl-part1=25.2.8-1, mesa-gl-part2=25.2.8-1
+file: mesa-gl-25.2.8-1.fpk
+size: 390
+sha256: f0f7471ada48edcdfd70e48d49d3f6e85f86ce97a261eeae391b404d1a35ee6d
+
+name: mesa-gl-part1
+version: 25.2.8-1
+arch: x86_64
+description: Mesa OpenGL and Vulkan from Ubuntu 24.04, for programs built for glibc (part 1)
+file: mesa-gl-part1-25.2.8-1.fpk
+size: 61358961
+sha256: 7ad546f5971dd1fc2563b78c7e420a34291765847bdfbf22502b24bbdfa46587
+
+name: mesa-gl-part2
+version: 25.2.8-1
+arch: x86_64
+description: Mesa OpenGL and Vulkan from Ubuntu 24.04, for programs built for glibc (part 2)
+file: mesa-gl-part2-25.2.8-1.fpk
+size: 19530694
+sha256: c4b260d1a12d72573c1ea6ad2fae628a9086e06614f10ec0523a1d2565c29f51
+
 name: micro
 version: 2.0.15
 arch: x86_64
@@ -298,6 +358,31 @@ file: neovim-0.12.4.fpk
 size: 9588144
 sha256: 5854a1f657c2afae54b9cac5a17ee305b406a633774aed6f14e60c6f475d18fb
 
+name: openjdk-21
+version: 21.0.13-1
+arch: x86_64
+description: OpenJDK 21 Java runtime from Ubuntu 24.04, for programs built for glibc
+depends: gtk3-runtime, openjdk-21-part1=21.0.13-1, openjdk-21-part2=21.0.13-1
+file: openjdk-21-21.0.13-1.fpk
+size: 422
+sha256: c1ce879c7b12afdfa8f0148d634e8cf0200943feeca494a1e3032f2d7c49cd1b
+
+name: openjdk-21-part1
+version: 21.0.13-1
+arch: x86_64
+description: OpenJDK 21 Java runtime from Ubuntu 24.04, for programs built for glibc (part 1)
+file: openjdk-21-part1-21.0.13-1.fpk
+size: 52279188
+sha256: 7c6f8ccee34cae342f6f004c625dc3515e61832d0a3b24e10948186c0c0d7fb8
+
+name: openjdk-21-part2
+version: 21.0.13-1
+arch: x86_64
+description: OpenJDK 21 Java runtime from Ubuntu 24.04, for programs built for glibc (part 2)
+file: openjdk-21-part2-21.0.13-1.fpk
+size: 17493104
+sha256: a1a46c90d04b718993d1fa4e443a0630f5249b103dada2fedc24993d3c47f57e
+
 name: openssh
 version: 10.5p1
 arch: x86_64
@@ -306,6 +391,15 @@ config: etc/ssh/ssh_config
 file: openssh-10.5p1.fpk
 size: 1685988
 sha256: 5328c7b91eca2fbbb93de23b72435a25e7191117c58e5f656efa86798ace277a
+
+name: prismlauncher
+version: 11.1.1-1
+arch: x86_64
+description: Prism Launcher for Minecraft (the project's build, run with flint-glibc)
+depends: gtk3-runtime, mesa-gl, openjdk-21
+file: prismlauncher-11.1.1-1.fpk
+size: 60995351
+sha256: bfed3e6ade3089b940bcdadf260c1c7effe2cd62388da19d022de6209e1d5fb3
 
 name: procs
 version: 0.14.12
@@ -348,14 +442,14 @@ file: st-0.9.3.fpk
 size: 1185589
 sha256: 57df7ac5e50286990fde0df6949a32afeaf7b448a22b8ee59e17e372cba41e38
 
-name: st-flint
+name: st-1
 version: 0.9.3
 arch: x86_64
 description: st set up for Flint: scrollback, JetBrains Mono, Flint's colors
 depends: xorg, fonts-jetbrains-mono
-file: st-flint-0.9.3.fpk
-size: 1186906
-sha256: f263741e2daf41e560e737c5c2c3fce32ea09bd69ac99d788ba67ef29df2afa5
+file: st-1-0.9.3.fpk
+size: 1186904
+sha256: f2c639c09092dc05cafeda229fce798491af22d5af36c7fb97df96726f8a20ed
 
 name: strace
 version: 7.2
@@ -390,13 +484,22 @@ size: 76185
 sha256: e982c5383a5769189eb25262f6190d4c609cade64b61b1ee8cf2bce2e4a498b4
 
 name: xorg
-version: 21.1.26
+version: 21.1.26.1
 arch: x86_64
 description: X.Org X server with built-in modesetting and libinput drivers, keyboard layouts, startx
 config: etc/X11/xinit/xinitrc, etc/fonts/fonts.conf
-file: xorg-21.1.26.fpk
-size: 5308054
-sha256: 7f99067f4c8b0c69504ed153037c6fbce4c02dbf6badb552ce35e6b9c9b0f1b6
+file: xorg-21.1.26.1.fpk
+size: 5308105
+sha256: 2c0e3e4c683675cd0b820c0a371ff95da8eaec559dcbf4135716b10117fdc865
+
+name: xorg-gl
+version: 21.1.12-1
+arch: x86_64
+description: X.Org server from Ubuntu 24.04 (run with flint-glibc): GLX, glamor, DRI3 for mesa-gl
+depends: xorg, mesa-gl
+file: xorg-gl-21.1.12-1.fpk
+size: 2251230
+sha256: 877370d99baf4c494478a3dcbbae7f6a0cd3e186ce1128fafb05cfbcca3ec57d
 
 name: xz
 version: 5.8.4
