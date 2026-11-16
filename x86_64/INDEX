@@ -1,4 +1,4 @@
-timestamp: 1794858204
+timestamp: 1794863457
 
 name: bash
 version: 5.3
@@ -63,6 +63,7 @@ version: 6.8
 arch: x86_64
 description: dwm, the tiling window manager, as suckless ships it
 depends: xorg, dmenu
+config-of: dwm
 file: dwm-6.8.fpk
 size: 1165799
 sha256: 89f2e99c62bcc653d75db1aa74a06028fd8437f1ab685506de1859499fae8429
@@ -72,6 +73,7 @@ version: 6.8
 arch: x86_64
 description: dwm set up for Flint: gaps, Super keys, gold on black, JetBrains Mono, a status bar
 depends: xorg, dmenu, fonts-jetbrains-mono
+config-of: dwm
 file: dwm-1-6.8.fpk
 size: 1786289
 sha256: 778b7907b84b760e714184cda3db02f2ab2832fa5ec9cc3e80ba966aaad3ef28
@@ -438,6 +440,7 @@ version: 0.9.3
 arch: x86_64
 description: st, the suckless terminal, as suckless ships it
 depends: xorg
+config-of: st
 file: st-0.9.3.fpk
 size: 1185589
 sha256: 57df7ac5e50286990fde0df6949a32afeaf7b448a22b8ee59e17e372cba41e38
@@ -447,6 +450,7 @@ version: 0.9.3
 arch: x86_64
 description: st set up for Flint: scrollback, JetBrains Mono, Flint's colors
 depends: xorg, fonts-jetbrains-mono
+config-of: st
 file: st-1-0.9.3.fpk
 size: 1186904
 sha256: f2c639c09092dc05cafeda229fce798491af22d5af36c7fb97df96726f8a20ed
@@ -484,13 +488,13 @@ size: 76185
 sha256: e982c5383a5769189eb25262f6190d4c609cade64b61b1ee8cf2bce2e4a498b4
 
 name: xorg
-version: 21.1.26.1
+version: 21.1.26.2
 arch: x86_64
 description: X.Org X server with built-in modesetting and libinput drivers, keyboard layouts, startx
 config: etc/X11/xinit/xinitrc, etc/fonts/fonts.conf
-file: xorg-21.1.26.1.fpk
-size: 5308105
-sha256: 2c0e3e4c683675cd0b820c0a371ff95da8eaec559dcbf4135716b10117fdc865
+file: xorg-21.1.26.2.fpk
+size: 5308304
+sha256: d8742c6cfec2db5528ad64de1efd446f34f543c9eb46045e75810958684bab73
 
 name: xorg-gl
 version: 21.1.12-1
