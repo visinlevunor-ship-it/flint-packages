@@ -91,5 +91,5 @@ mkdir -p "$STAGE/usr/share/licenses/xorg" "$STAGE/var/lib/xkb"
 cp "$xs/COPYING" "$STAGE/usr/share/licenses/xorg/COPYING.xserver"
 cp "$xil/COPYING" "$STAGE/usr/share/licenses/xorg/COPYING.xf86-input-libinput"
 cp "$xkc/COPYING" "$STAGE/usr/share/licenses/xorg/COPYING.xkeyboard-config"
-ports_package 21.1.26.1 "X.Org X server with built-in modesetting and libinput drivers, keyboard layouts, startx" \
+ports_package 21.1.26.2 "X.Org X server with built-in modesetting and libinput drivers, keyboard layouts, startx" \
     etc/X11/xinit/xinitrc etc/fonts/fonts.conf

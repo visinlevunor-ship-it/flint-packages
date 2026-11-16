@@ -30,6 +30,40 @@ layout=${XKB_LAYOUT:-}
 keeptty=
 [ "$tty" = "/dev/tty$vt" ] && keeptty=-keeptty
 
+# the GPU: the card its kernel driver (amdgpu, i915...) made, else the firmware framebuffer
+# (simpledrm). The numbers are not fixed: when a GPU driver replaces simpledrm, card0 goes
+# away and the GPU is card1. A GPU driver still loading gets 5 seconds. XCARD overrides.
+gpu=
+fb=
+find_cards() {
+    gpu=
+    fb=
+    for c in /dev/dri/card[0-9]*; do
+        [ -e "$c" ] || continue
+        drv=$(readlink "/sys/class/drm/${c##*/}/device/driver" 2>/dev/null)
+        case "${drv##*/}" in
+            simple-framebuffer|simpledrm|efi-framebuffer|vesa-framebuffer) [ -z "$fb" ] && fb=$c ;;
+            *) [ -z "$gpu" ] && gpu=$c ;;
+        esac
+    done
+}
+card=${XCARD:-}
+n=0
+while [ -z "$card" ]; do
+    find_cards
+    if [ -n "$gpu" ]; then
+        card=$gpu
+    elif [ -n "$fb" ] && [ "$n" -ge 5 ]; then
+        card=$fb
+    elif [ "$n" -ge 10 ]; then
+        echo "startx: no graphics device in /dev/dri; is the GPU driver loaded? (lsmod, dmesg)" >&2
+        exit 1
+    else
+        n=$((n + 1))
+        sleep 1
+    fi
+done
+
 state=${XDG_STATE_HOME:-${HOME:-/tmp}/.local/state}/xorg
 mkdir -p "$state"
 conf="$state/xorg-$display.conf"
@@ -41,6 +75,7 @@ conf="$state/xorg-$display.conf"
     echo 'Section "Device"'
     echo '    Identifier "gpu"'
     echo '    Driver "modesetting"'
+    echo "    Option \"kmsdev\" \"$card\""
     echo 'EndSection'
     echo 'Section "Screen"'
     echo '    Identifier "screen"'
