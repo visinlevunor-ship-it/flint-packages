@@ -1,5 +1,5 @@
 #!/bin/sh
-# Super+w in dwm-flint: the first web browser that is installed.
+# Super+w in dwm-1: the first web browser that is installed.
 for b in "$BROWSER" firefox librewolf chromium; do
     [ -n "$b" ] && command -v "$b" >/dev/null 2>&1 && exec "$b" "$@"
 done

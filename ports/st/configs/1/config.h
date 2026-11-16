@@ -1,4 +1,4 @@
-/* st-flint: Flint's st. Scrollback with Shift+PageUp/PageDown or the mouse wheel,
+/* st-1: Flint's st. Scrollback with Shift+PageUp/PageDown or the mouse wheel,
  * Ctrl+Shift+C/V to copy and paste, Ctrl+Shift+PageUp/PageDown (or +/-) to zoom.
  * Change it and rebuild with ports/st/build.sh OUTDIR flint (flint-packages). */
 

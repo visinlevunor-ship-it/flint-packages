@@ -4,7 +4,7 @@
 #   ports/st/build.sh OUTDIR [CONFIG]
 #
 # Like dwm: CONFIG is a directory under ports/st/configs (default: upstream), each one its own
-# package, st or st-CONFIG, with `config-of: st` (pkg config install st-flint). A config
+# package, st or st-N, with `config-of: st` (pkg config install st-1). A config
 # directory has config.h (none: upstream's config.def.h), optional *.diff patches applied in
 # name order, a description file, an optional depends file and optional files/.
 . "$(dirname "$0")/../common.sh"

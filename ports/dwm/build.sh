@@ -3,9 +3,9 @@
 #
 #   ports/dwm/build.sh OUTDIR [CONFIG]
 #
-# CONFIG is a directory under ports/dwm/configs (default: upstream, dwm as suckless ships it).
-# Each one is its own package, dwm or dwm-CONFIG, with `config-of: dwm`: switch between them
-# with `pkg config install dwm-CONFIG`. A config directory has config.h, optional *.diff
+# CONFIG is a directory under ports/dwm/configs (default: upstream, dwm as suckless ships it);
+# the others are numbered. Each one is its own package, dwm or dwm-N, with `config-of: dwm`:
+# install or switch with `pkg config install dwm-N`. A config directory has config.h, optional *.diff
 # patches applied in name order, a description file, an optional depends file (packages it needs), optional extra files under files/,
 # and optional programs/*.c, each built into /usr/bin.
 . "$(dirname "$0")/../common.sh"
@@ -30,7 +30,7 @@ if [ -f "$CDIR/config.h" ]; then cp "$CDIR/config.h" "$src/config.h"; else cp "$
 mkdir -p "$STAGE/usr/bin" "$STAGE/usr/share/licenses/$PKGNAME" "$STAGE/usr/share/man/man1"
 cp "$src/dwm" "$STAGE/usr/bin/dwm"
 cp "$src/LICENSE" "$STAGE/usr/share/licenses/$PKGNAME/"
-# small programs that come with the configuration (dwm-flint's status bar)
+# small programs that come with the configuration (dwm-1's status bar)
 for c in "$CDIR"/programs/*.c; do
     [ -f "$c" ] || continue
     $CC $CFLAGS -I"$SYSROOT/include" -o "$STAGE/usr/bin/$(basename "$c" .c)" "$c"         -static -Wl,--gc-sections -L"$SYSROOT/lib" $X11_LIBS >>"$LOG" 2>&1 || die "$(basename "$c") failed"

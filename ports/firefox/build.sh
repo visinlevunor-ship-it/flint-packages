@@ -3,7 +3,7 @@
 # rather than a snap), run by flint-glibc with the libraries from gtk3-runtime.
 #
 # libxul.so alone is over 50 MB compressed, so the package is split (ports_split):
-# firefox-1 holds it and firefox the rest. Build both directories with pkg build.
+# firefox-part1 holds it and firefox the rest. Build both directories with pkg build.
 #
 #   ports/firefox/build.sh OUTDIR
 . "$(dirname "$0")/../common.sh"

@@ -66,6 +66,6 @@ The steps are: `ports_init NAME OUTDIR`, any `lib_*` it needs, the build into `$
 `$STAGE/usr/share/licenses/NAME/`.
 
 A package that would be over 50 MB compressed calls `ports_split MAX_KIB` after
-`ports_package`: it moves files into NAME-1, NAME-2... (separate directories next to OUTDIR)
+`ports_package`: it moves files into NAME-part1, NAME-part2... (separate directories next to OUTDIR)
 and makes NAME depend on them, since GitHub refuses files over 100 MB. Run `pkg build` on
 each of those directories.

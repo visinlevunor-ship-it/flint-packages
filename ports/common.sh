@@ -168,7 +168,7 @@ ports_package() { # VERSION DESCRIPTION [CONFIG-FILE...]
 }
 
 # ports_split MAX_KIB: a package too big for one file in git (GitHub refuses files over
-# 100 MB) is split: OUT-1, OUT-2... (packages NAME-1, NAME-2...) take whole files and
+# 100 MB) is split: OUT-part1, OUT-part2... (packages NAME-part1...) take whole files and
 # directories up to MAX_KIB compressed each, and NAME keeps the rest and depends on them at
 # its own version, so installing NAME brings everything. Configuration files stay in NAME.
 # Build each directory with pkg build.
@@ -212,14 +212,14 @@ ports_split() { # MAX_KIB
             n=$((n + 1))
             placed=$n
             echo 0 > "$WORK/part$n.kib"
-            rm -rf "$OUT-$n"
-            mkdir -p "$OUT-$n/files"
-            printf 'name: %s\nversion: %s\ndescription: %s (part %s)\narch: x86_64\n' "$NAME-$n" "$version" "$desc" "$n" > "$OUT-$n/control"
-            deps="${deps:+$deps, }$NAME-$n=$version"
+            rm -rf "$OUT-part$n"
+            mkdir -p "$OUT-part$n/files"
+            printf 'name: %s\nversion: %s\ndescription: %s (part %s)\narch: x86_64\n' "$NAME-part$n" "$version" "$desc" "$n" > "$OUT-part$n/control"
+            deps="${deps:+$deps, }$NAME-part$n=$version"
         fi
         echo $(( $(cat "$WORK/part$placed.kib") + k )) > "$WORK/part$placed.kib"
-        mkdir -p "$(dirname "$OUT-$placed/files/$rel")"
-        mv "$OUT/files/$rel" "$OUT-$placed/files/$rel"
+        mkdir -p "$(dirname "$OUT-part$placed/files/$rel")"
+        mv "$OUT/files/$rel" "$OUT-part$placed/files/$rel"
     done < "$WORK/units.sorted"
     # NAME itself: a small file naming its parts, so it is never empty
     mkdir -p "$OUT/files/usr/share/licenses/$NAME"
@@ -229,7 +229,7 @@ ports_split() { # MAX_KIB
     else
         printf 'depends: %s\n' "$deps" >> "$OUT/control"
     fi
-    say "split $NAME into $n parts ($OUT-1 ... $OUT-$n) and $OUT"
+    say "split $NAME into $n parts ($OUT-part1 ... $OUT-part$n) and $OUT"
 }
 
 # ---- Ubuntu binary packages (programs built for glibc, run by flint-glibc) ----------------

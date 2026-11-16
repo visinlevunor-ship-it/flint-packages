@@ -1,4 +1,4 @@
-/* dwm-flint: Flint's dwm. Super is the modifier key; Super+/ shows every key.
+/* dwm-1: Flint's dwm. Super is the modifier key; Super+/ shows every key.
  * Change it and rebuild with ports/dwm/build.sh OUTDIR flint (flint-packages). */
 
 /* appearance */

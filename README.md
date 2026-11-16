@@ -81,11 +81,11 @@ is its Ed25519 signature. pkg installs nothing unless that signature matches a k
 
 | Package | Version | |
 |---|---|---|
-| xorg | 21.1.26 | X server with built-in modesetting and libinput drivers; `startx`, keyboard layouts |
-| dwm-flint | 6.8 | dwm set up for Flint: gaps, Super keys, gold on black, status bar (`config-of: dwm`) |
+| xorg | 21.1.26.1 | X server with built-in modesetting and libinput drivers; `startx`, keyboard layouts |
 | dwm | 6.8 | dwm as suckless ships it (`config-of: dwm`) |
-| st-flint | 0.9.3 | st with scrollback, JetBrains Mono and Flint's colors (`config-of: st`) |
+| dwm-1 | 6.8 | configuration 1 of dwm: gaps, Super keys, gold on black, status bar |
 | st | 0.9.3 | st as suckless ships it (`config-of: st`) |
+| st-1 | 0.9.3 | configuration 1 of st: scrollback, JetBrains Mono and Flint's colors |
 | dmenu | 5.4 | menu and program launcher |
 | fonts-jetbrains-mono | 2.304 | JetBrains Mono |
 
@@ -93,7 +93,7 @@ is its Ed25519 signature. pkg installs nothing unless that signature matches a k
 
 | Package | Version | |
 |---|---|---|
-| firefox | 136.0 | Firefox, Ubuntu's build (in two parts, `firefox-1` and `firefox-2`) |
+| firefox | 136.0 | Firefox, Ubuntu's build (with its parts `firefox-part1`, `firefox-part2`) |
 | gtk3-runtime | 3.24.41 | GTK 3 and the libraries it needs, from Ubuntu 24.04 |
 | mesa-gl | 25.2.8 | Mesa's OpenGL and Vulkan: AMD, Intel and NVIDIA (nouveau) GPUs, llvmpipe without one |
 | xorg-gl | 21.1.12 | Ubuntu's X server, for GLX and GPU acceleration (startx uses it once installed) |
@@ -101,7 +101,7 @@ is its Ed25519 signature. pkg installs nothing unless that signature matches a k
 | prismlauncher | 11.1.1 | Prism Launcher for Minecraft |
 
 ```sh
-pkg install firefox              # with dwm-flint: Super+w, or `firefox`; it opens on tag 2
+pkg install firefox              # with dwm-1: Super+w, or `firefox`; it opens on tag 2
 pkg install prismlauncher xorg-gl   # Minecraft; restart X afterwards so it runs with OpenGL
 ```
 
@@ -111,9 +111,10 @@ With `xorg-gl` installed, OpenGL programs (Minecraft) use the GPU through Mesa w
 kernel has a driver for it, and llvmpipe on the CPU otherwise.
 
 ```sh
-pkg install dwm-flint st-flint   # pulls in xorg, dmenu and the font
-startx                           # on a console (tty1, ...); Super+/ lists the keys
-pkg config install dwm           # switch to plain dwm, and back: pkg config install dwm-flint
+pkg config install dwm-1        # dwm, configuration 1; pulls in xorg, dmenu and the font
+pkg config install st-1         # st, configuration 1
+startx                          # on a console (tty1, ...); Super+/ lists the keys
+pkg config dwm                  # dwm's configurations; plain dwm: pkg config install dwm
 ```
 
 X runs as the user who starts it: that user must be in the `video` and `input` groups
@@ -153,8 +154,8 @@ git add -A && git commit && git push
 ```
 
 dwm and st are configured by recompiling, so each configuration is a package of its own, built
-from `ports/dwm/configs/NAME` (or `ports/st/configs/NAME`): `ports/dwm/build.sh /tmp/dwm-flint flint`.
-Add a directory there to publish another configuration; `pkg config install dwm-NAME` swaps it in.
+from `ports/dwm/configs/N` (or `ports/st/configs/N`): `ports/dwm/build.sh /tmp/dwm-1 1`.
+Add the next number there to publish another configuration; `pkg config install dwm-N` swaps it in.
 
 Kernel packages need a built flint-linux checkout:
 
