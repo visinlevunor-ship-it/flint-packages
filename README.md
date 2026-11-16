@@ -95,14 +95,20 @@ is its Ed25519 signature. pkg installs nothing unless that signature matches a k
 |---|---|---|
 | firefox | 136.0 | Firefox, Ubuntu's build (in two parts, `firefox-1` and `firefox-2`) |
 | gtk3-runtime | 3.24.41 | GTK 3 and the libraries it needs, from Ubuntu 24.04 |
+| mesa-gl | 25.2.8 | Mesa's OpenGL and Vulkan: AMD, Intel and NVIDIA (nouveau) GPUs, llvmpipe without one |
+| xorg-gl | 21.1.12 | Ubuntu's X server, for GLX and GPU acceleration (startx uses it once installed) |
+| openjdk-21 | 21.0.13 | OpenJDK 21 Java runtime |
+| prismlauncher | 11.1.1 | Prism Launcher for Minecraft |
 
 ```sh
 pkg install firefox              # with dwm-flint: Super+w, or `firefox`; it opens on tag 2
+pkg install prismlauncher xorg-gl   # Minecraft; restart X afterwards so it runs with OpenGL
 ```
 
 This Firefox is Ubuntu 20.04's last .deb build (later Ubuntu releases ship Firefox as a snap),
 so it gets no more security updates; it is the first step toward a Firefox kept current.
-Without a GPU driver for it yet, Firefox draws with the CPU.
+With `xorg-gl` installed, OpenGL programs (Minecraft) use the GPU through Mesa when the
+kernel has a driver for it, and llvmpipe on the CPU otherwise.
 
 ```sh
 pkg install dwm-flint st-flint   # pulls in xorg, dmenu and the font

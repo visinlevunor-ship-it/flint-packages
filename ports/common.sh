@@ -32,7 +32,10 @@ fetch() {
     f="$CACHE/$(basename "$1")"
     if [ ! -f "$f" ] || [ "$(sha256_of "$f")" != "$2" ]; then
         say "downloading $(basename "$1")"
-        curl -fsSL -o "$f.part" "$UBUNTU/pool/$1" || curl -fsSL -o "$f.part" "$LAUNCHPAD/$(basename "$1")" || die "cannot download $1"
+        case "$1" in
+            http://*|https://*) curl -fsSL -o "$f.part" "$1" || die "cannot download $1" ;;
+            *) curl -fsSL -o "$f.part" "$UBUNTU/pool/$1" || curl -fsSL -o "$f.part" "$LAUNCHPAD/$(basename "$1")" || die "cannot download $1" ;;
+        esac
         mv "$f.part" "$f"
     fi
     got=$(sha256_of "$f")

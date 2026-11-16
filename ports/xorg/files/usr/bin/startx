@@ -75,7 +75,11 @@ conf="$state/xorg-$display.conf"
     echo 'EndSection'
 } > "$conf"
 
-Xorg ":$display" "vt$vt" -config "$conf" $keeptty -noreset -nolisten tcp \
+# xorg-gl (Mesa's OpenGL, GLX and GPU drivers, run by flint-glibc) brings its own X server;
+# when it is installed, it is the better one. XSERVER overrides the choice.
+server=${XSERVER:-/usr/bin/Xorg}
+[ -z "${XSERVER:-}" ] && [ -x /usr/lib/xorg/Xorg ] && server=/usr/lib/xorg/Xorg
+"$server" ":$display" "vt$vt" -config "$conf" $keeptty -noreset -nolisten tcp \
     -logfile "$state/Xorg.$display.log" >/dev/null 2>&1 &
 server=$!
 

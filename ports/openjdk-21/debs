@@ -1,0 +1,5 @@
+main/n/nspr/libnspr4_4.35-1.1build1_amd64.deb e579e72d091f6c7a13f5a756c31065b15aae5b81840d61b069355aa2283c07b4 libnspr4 2:4.35-1.1build1
+main/n/nss/libnss3_3.98-1ubuntu0.3_amd64.deb e11fdf8c09a068d0f0c3fd90ed971253dfed7227cc20d3d487fd615d4771f1bb libnss3 2:3.98-1ubuntu0.3
+main/p/pcsc-lite/libpcsclite1_2.0.3-1build1_amd64.deb 703bacc9204a7ecc24486ac8c96d15d0b9e2c91c385388e132ad4fd8f56f035a libpcsclite1 2.0.3-1build1
+main/s/sqlite3/libsqlite3-0_3.45.1-1ubuntu2.9_amd64.deb e04c9d3cf7d0fc4d63332bea2395280550a0b5daef35d19c3c079fc2e96a92e5 libsqlite3-0 3.45.1-1ubuntu2.9
+main/o/openjdk-21/openjdk-21-jre-headless_21.0.13.0.3+1-1~24.04.1_amd64.deb 4256a2ac2e6e53bc8f4066f59857dfdc2f3b67f7803a83bbfaa36ee84008597d openjdk-21-jre-headless 21.0.13.0.3+1-1~24.04.1

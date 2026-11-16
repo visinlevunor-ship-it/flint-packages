@@ -1,0 +1,12 @@
+#!/bin/sh
+# Prism Launcher is built for glibc: flint-glibc (Flint 1.1 and later) runs it.
+if [ ! -x /lib64/ld-linux-x86-64.so.2 ]; then
+    echo "prismlauncher: this Flint has no flint-glibc (/lib64/ld-linux-x86-64.so.2); update Flint first" >&2
+    exit 1
+fi
+D=/usr/lib/prismlauncher
+export LD_LIBRARY_PATH="$D/lib:$D/qt-lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export QT_PLUGIN_PATH="$D/qt-plugins"
+export QT_QPA_PLATFORM=${QT_QPA_PLATFORM:-xcb}
+export QT_XKB_CONFIG_ROOT=${QT_XKB_CONFIG_ROOT:-/usr/share/X11/xkb}
+exec "$D/prismlauncher" -d "${PRISM_HOME:-$HOME/.local/share/PrismLauncher}" "$@"
