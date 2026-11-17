@@ -1,4 +1,4 @@
-timestamp: 1794863457
+timestamp: 1794899835
 
 name: bash
 version: 5.3
@@ -130,95 +130,95 @@ size: 34427092
 sha256: be8d64be5856994ec7cc5cd55b8b1ffca97d9a9de374b7f8a4c9cd6355f8b041
 
 name: flint-firmware
-version: 1.0.202611121926
+version: 1.1.202611170716
 arch: x86_64
 description: Device firmware (network, Wi-Fi, storage, ...)
-depends: flint-firmware-1=1.0.202611121926, flint-firmware-2=1.0.202611121926, flint-firmware-3=1.0.202611121926
-file: flint-firmware-1.0.202611121926.fpk
-size: 336
-sha256: 16ea435ac18b745d73a5104dd4e129702f08ea5bf0d753c788f7651487d620df
+depends: flint-firmware-part1=1.1.202611170716, flint-firmware-part2=1.1.202611170716, flint-firmware-part3=1.1.202611170716
+file: flint-firmware-1.1.202611170716.fpk
+size: 338
+sha256: cba4b96b2b968c52b001b664db25a7540efa1c2faa89fa9c6f5575b1b7b8c69b
 
-name: flint-firmware-1
-version: 1.0.202611121926
+name: flint-firmware-part1
+version: 1.1.202611170716
 arch: x86_64
 description: Device firmware (network, Wi-Fi, storage, ...) (part 1)
-file: flint-firmware-1-1.0.202611121926.fpk
-size: 43412556
-sha256: ed90023809d50f5a970f62b49b5e7cbb65a0a7b787877474fad1ec6f9a5f8a8c
+file: flint-firmware-part1-1.1.202611170716.fpk
+size: 43412559
+sha256: 3377ab76828b2abecae4849e4b4c3d5dde43e6bbfe22645ec384ee97c075ca78
 
-name: flint-firmware-2
-version: 1.0.202611121926
+name: flint-firmware-part2
+version: 1.1.202611170716
 arch: x86_64
 description: Device firmware (network, Wi-Fi, storage, ...) (part 2)
-file: flint-firmware-2-1.0.202611121926.fpk
-size: 34760541
-sha256: 0ea0a2da4617949b7d1dddce49c1a98badf8eeb7e999aaa8ee9d6929b5a195aa
+file: flint-firmware-part2-1.1.202611170716.fpk
+size: 34760545
+sha256: 8957652e01445356a3be0cde9ba93229a78e7fd8b1385a470326c2973756999b
 
-name: flint-firmware-3
-version: 1.0.202611121926
+name: flint-firmware-part3
+version: 1.1.202611170716
 arch: x86_64
 description: Device firmware (network, Wi-Fi, storage, ...) (part 3)
-file: flint-firmware-3-1.0.202611121926.fpk
-size: 28113158
-sha256: 0e9de1483943c056341ed46c1b9d7980b2503874a1fb5364407e17878e4ba37e
+file: flint-firmware-part3-1.1.202611170716.fpk
+size: 28113162
+sha256: bd82a0a20169827f2b4b127e43975c955acd6bb22b43947f65c2fa53a718960c
 
 name: flint-gpu-firmware
-version: 1.0.202611121926
+version: 1.1.202611170716
 arch: x86_64
 description: Graphics firmware (AMD, Intel)
-depends: flint-gpu-firmware-1=1.0.202611121926, flint-gpu-firmware-2=1.0.202611121926
-file: flint-gpu-firmware-1.0.202611121926.fpk
-size: 325
-sha256: 44df68ff1aa70954812b8797cd28d10a35baccdd4c850b7a4032d4b87efcb95a
+depends: flint-gpu-firmware-part1=1.1.202611170716, flint-gpu-firmware-part2=1.1.202611170716
+file: flint-gpu-firmware-1.1.202611170716.fpk
+size: 328
+sha256: 6123162b6825a2788f950a088c3cce6b4606d5bd4c992aaf5c1ec3881129d26f
 
-name: flint-gpu-firmware-1
-version: 1.0.202611121926
+name: flint-gpu-firmware-part1
+version: 1.1.202611170716
 arch: x86_64
 description: Graphics firmware (AMD, Intel) (part 1)
-file: flint-gpu-firmware-1-1.0.202611121926.fpk
-size: 42158771
-sha256: d661ca324330090f3909b35e042a2464fe80c794c6d6bf35df92f1af8c2de5fe
+file: flint-gpu-firmware-part1-1.1.202611170716.fpk
+size: 42158774
+sha256: 928abebb2f5876e2a7029aeff17810e4a8479bc30dc336dc4124a245c41c340a
 
-name: flint-gpu-firmware-2
-version: 1.0.202611121926
+name: flint-gpu-firmware-part2
+version: 1.1.202611170716
 arch: x86_64
 description: Graphics firmware (AMD, Intel) (part 2)
-file: flint-gpu-firmware-2-1.0.202611121926.fpk
-size: 3379532
-sha256: 18887321250fee4cc72767d4160b6f9277441f16f1ba359f6293412b017ca000
+file: flint-gpu-firmware-part2-1.1.202611170716.fpk
+size: 3379537
+sha256: fc100afd6798d78c6b68185f095202df2ec65a663f344f50ecff1b2dd5f15907
 
 name: flint-kernel
-version: 7.0.0-42-generic.202611121926
+version: 7.0.0-42-generic.202611170716
 arch: x86_64
 description: Linux 7.0.0-42-generic, the kernel Flint comes with, and its drivers
-depends: flint-kernel-1=7.0.0-42-generic.202611121926, flint-kernel-2=7.0.0-42-generic.202611121926
-file: flint-kernel-7.0.0-42-generic.202611121926.fpk
-size: 21832307
-sha256: 1303bcd9b6c96b73785cf3cb623dbee4d23275c5301e0ae8ae8a2a7e6e522cd0
+depends: flint-kernel-part1=7.0.0-42-generic.202611170716, flint-kernel-part2=7.0.0-42-generic.202611170716
+file: flint-kernel-7.0.0-42-generic.202611170716.fpk
+size: 21832312
+sha256: 498fc3c2bf92139a1243989cbb21576fcf3414e4beedee67a6ea691ddcacc3a8
 
-name: flint-kernel-1
-version: 7.0.0-42-generic.202611121926
+name: flint-kernel-part1
+version: 7.0.0-42-generic.202611170716
 arch: x86_64
 description: Linux 7.0.0-42-generic, the kernel Flint comes with, and its drivers (part 1)
-file: flint-kernel-1-7.0.0-42-generic.202611121926.fpk
-size: 22199221
-sha256: f608c3b1d4d37db02e381bcebe00a5bf28d2a816e3ded4159467accdb2c6399d
+file: flint-kernel-part1-7.0.0-42-generic.202611170716.fpk
+size: 22199227
+sha256: c3a922341a6a0a34b8313201a957030c809ab12535b20c15aec3087561e48d28
 
-name: flint-kernel-2
-version: 7.0.0-42-generic.202611121926
+name: flint-kernel-part2
+version: 7.0.0-42-generic.202611170716
 arch: x86_64
 description: Linux 7.0.0-42-generic, the kernel Flint comes with, and its drivers (part 2)
-file: flint-kernel-2-7.0.0-42-generic.202611121926.fpk
-size: 33008222
-sha256: 496fc5c0fa5b5726092dc9dce29342224f441a48066625140278b9fb9f28b484
+file: flint-kernel-part2-7.0.0-42-generic.202611170716.fpk
+size: 33008229
+sha256: e3bde10823dc31794259a83e8988eedb22ea215895fb596f3a22cbf8173df75a
 
 name: flint-system
-version: 1.0.202611121926
+version: 1.1.202611170716
 arch: x86_64
-description: Flint Linux 1.0 base system and bootloader
-file: flint-system-1.0.202611121926.fpk
-size: 1636181
-sha256: e4fa1fa038ee7c42563918cd8330cb7003a7f6847c8fcad1a35823d945083617
+description: Flint Linux 1.1 base system and bootloader
+file: flint-system-1.1.202611170716.fpk
+size: 1827838
+sha256: 9bf0212d3e58d22ed1cc6221f549dbe18a52dc01b1315738643337f9cf666115
 
 name: fonts-jetbrains-mono
 version: 2.304
@@ -488,13 +488,13 @@ size: 76185
 sha256: e982c5383a5769189eb25262f6190d4c609cade64b61b1ee8cf2bce2e4a498b4
 
 name: xorg
-version: 21.1.26.2
+version: 21.1.26.3
 arch: x86_64
 description: X.Org X server with built-in modesetting and libinput drivers, keyboard layouts, startx
 config: etc/X11/xinit/xinitrc, etc/fonts/fonts.conf
-file: xorg-21.1.26.2.fpk
-size: 5308304
-sha256: d8742c6cfec2db5528ad64de1efd446f34f543c9eb46045e75810958684bab73
+file: xorg-21.1.26.3.fpk
+size: 5308423
+sha256: f7eb6d424767d2d4af115c1fc57119c4ef9195ba0bf5ed41575e907728f47322
 
 name: xorg-gl
 version: 21.1.12-1
