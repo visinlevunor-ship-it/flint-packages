@@ -81,7 +81,7 @@ is its Ed25519 signature. pkg installs nothing unless that signature matches a k
 
 | Package | Version | |
 |---|---|---|
-| xorg | 21.1.26.3 | X server with built-in modesetting and libinput drivers; `startx`, keyboard layouts |
+| xorg | 21.1.26.4 | X server with built-in modesetting and libinput drivers; `startx`, keyboard layouts |
 | dwm | 6.8 | dwm as suckless ships it (`config-of: dwm`) |
 | dwm-1 | 6.8 | configuration 1 of dwm: gaps, Super keys, gold on black, status bar |
 | st | 0.9.3 | st as suckless ships it (`config-of: st`) |

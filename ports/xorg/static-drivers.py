@@ -80,6 +80,45 @@ p = os.path.join(xs, "hw/xfree86/loader/loader.c")
 s = open(p).read()
 s = re.sub(r"(void\nLoaderUnload\(const char \*name, void \*handle\)\n\{\n)",
            r"\1    if (!handle)\n        return;\n", s, count=1)
+# Drivers look up a submodule's functions by name (modesetting takes shadowSetup and the
+# rest from "shadow" when the GPU wants a shadow framebuffer, as amdgpu does). A built-in
+# module has no handle for dlsym, which would give NULL and crash the server: answer from
+# a table of the built-in functions.
+old = """LoaderSymbolFromModule(void *handle, const char *name)
+{
+    ModuleDescPtr mod = handle;
+    return dlsym(mod->handle, name);
+}"""
+if old not in s:
+    sys.exit("hw/xfree86/loader/loader.c: LoaderSymbolFromModule not found")
+s = s.replace(old, """LoaderSymbolFromModule(void *handle, const char *name)
+{
+    ModuleDescPtr mod = handle;
+#ifdef FLINT_STATIC_DRIVERS
+    if (!mod->handle) {
+        /* the shadow module's functions (miext/shadow); only their addresses are taken */
+        extern void shadowSetup(void), shadowAdd(void), shadowRemove(void),
+            shadowUpdate32to24(void), shadowUpdatePacked(void), shadowUpdateRotatePacked(void);
+        static const struct {
+            const char *name;
+            void (*fn)(void);
+        } table[] = {
+            { "shadowSetup", shadowSetup },
+            { "shadowAdd", shadowAdd },
+            { "shadowRemove", shadowRemove },
+            { "shadowUpdate32to24", shadowUpdate32to24 },
+            { "shadowUpdatePacked", shadowUpdatePacked },
+            { "shadowUpdateRotatePacked", shadowUpdateRotatePacked },
+        };
+        for (size_t i = 0; i < sizeof(table) / sizeof(table[0]); i++)
+            if (!strcmp(name, table[i].name))
+                return (void *) table[i].fn;
+        LogMessageVerb(X_ERROR, 1, "%s is not built into this server\\n", name);
+        return NULL;
+    }
+#endif
+    return dlsym(mod->handle, name);
+}""", 1)
 open(p, "w").write(s)
 
 # 2. modesetting: a static library instead of a module.
