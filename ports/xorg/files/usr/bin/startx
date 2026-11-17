@@ -22,6 +22,14 @@ case "${XVT:-}:$tty" in
     *) echo "startx: run it on a virtual console (tty1, tty2, ...), or set XVT; not on $tty" >&2; exit 1 ;;
 esac
 
+# the session: a program to run, ~/.xinitrc, or Flint's default (dwm). Without one X would
+# start and sit on a black screen.
+if [ $# -eq 0 ] && [ ! -f "$HOME/.xinitrc" ] && ! command -v dwm >/dev/null 2>&1; then
+    echo "startx: no window manager installed; install dwm with: pkg config install dwm-1" >&2
+    echo "        (or put your own session in ~/.xinitrc, or run: startx PROGRAM)" >&2
+    exit 1
+fi
+
 layout=${XKB_LAYOUT:-}
 [ -z "$layout" ] && [ -r /etc/X11/xkb-layout ] && layout=$(cat /etc/X11/xkb-layout)
 [ -z "$layout" ] && layout=us
@@ -126,6 +134,25 @@ why() {
     echo "full log: $state/Xorg.$display.log" >&2
 }
 
+# Stop the X server. Xorg writes its PID to /tmp/.X$display-lock; in Flint 1.1 and older $!
+# is a shell around it rather than Xorg itself, and killing only that left X on the screen.
+stop_server() {
+    xpid=
+    [ -r "/tmp/.X$display-lock" ] && read -r xpid < "/tmp/.X$display-lock"
+    kill "$server" 2>/dev/null
+    [ -n "$xpid" ] && kill "$xpid" 2>/dev/null
+    i=0
+    while [ -n "$xpid" ] && kill -0 "$xpid" 2>/dev/null; do
+        i=$((i + 1))
+        if [ "$i" -gt 10 ]; then
+            kill -9 "$xpid" 2>/dev/null
+            break
+        fi
+        sleep 1
+    done
+    wait "$server" 2>/dev/null
+}
+
 # wait for the server's socket
 n=0
 while [ ! -e "/tmp/.X11-unix/X$display" ]; do
@@ -138,21 +165,28 @@ while [ ! -e "/tmp/.X11-unix/X$display" ]; do
     if [ "$n" -gt 30 ]; then
         echo "startx: the X server did not start in 30 seconds" >&2
         why
-        kill "$server" 2>/dev/null
+        stop_server
         exit 1
     fi
     sleep 1
 done
 
+# The session's errors go to a file as well as the terminal: X covers the terminal, so they
+# are shown again once X is gone.
 export DISPLAY=":$display"
+slog="$state/session.$display.log"
 if [ $# -gt 0 ]; then
-    "$@"
+    "$@" 2>"$slog"
 elif [ -f "$HOME/.xinitrc" ]; then
-    sh "$HOME/.xinitrc"
+    sh "$HOME/.xinitrc" 2>"$slog"
 else
-    sh /etc/X11/xinit/xinitrc
+    sh /etc/X11/xinit/xinitrc 2>"$slog"
 fi
 status=$?
-kill "$server" 2>/dev/null
-wait "$server" 2>/dev/null
+stop_server
+if [ "$status" -ne 0 ]; then
+    echo "startx: the session ended with status $status" >&2
+    tail -n 15 "$slog" >&2
+    echo "full log: $slog" >&2
+fi
 exit $status
