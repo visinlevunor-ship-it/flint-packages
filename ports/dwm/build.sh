@@ -7,7 +7,8 @@
 # the others are numbered. Each one is its own package, dwm or dwm-N, with `config-of: dwm`:
 # install or switch with `pkg config install dwm-N`. A config directory has config.h, optional *.diff
 # patches applied in name order, a description file, an optional depends file (packages it needs), optional extra files under files/,
-# and optional programs/*.c, each built into /usr/bin.
+# and optional programs/*.c, each built into /usr/bin. A revision file (a number) is added to
+# the version when the configuration changes: 6.8-1, 6.8-2...
 . "$(dirname "$0")/../common.sh"
 CONFIG=${2:-upstream}
 CDIR="$PORTS/dwm/configs/$CONFIG"
@@ -36,6 +37,8 @@ for c in "$CDIR"/programs/*.c; do
     $CC $CFLAGS -I"$SYSROOT/include" -o "$STAGE/usr/bin/$(basename "$c" .c)" "$c"         -static -Wl,--gc-sections -L"$SYSROOT/lib" $X11_LIBS >>"$LOG" 2>&1 || die "$(basename "$c") failed"
 done
 [ -d "$CDIR/files" ] && cp -R "$CDIR/files"/. "$STAGE"/
-ports_package 6.8 "$(cat "$CDIR/description")"
+version=6.8
+[ -f "$CDIR/revision" ] && version="6.8-$(cat "$CDIR/revision")"
+ports_package "$version" "$(cat "$CDIR/description")"
 printf 'config-of: dwm\n' >> "$OUT/control"
 if [ -f "$CDIR/depends" ]; then printf 'depends: %s\n' "$(cat "$CDIR/depends")" >> "$OUT/control"; fi
