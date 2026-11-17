@@ -118,16 +118,26 @@ server=${XSERVER:-/usr/bin/Xorg}
     -logfile "$state/Xorg.$display.log" >/dev/null 2>&1 &
 server=$!
 
+# on failure: what went wrong, from the server's log
+why() {
+    echo "startx: using $card; the X server's errors:" >&2
+    grep '] (EE) [A-Za-z]' "$state/Xorg.$display.log" 2>/dev/null | grep -v -e mouse -e kbd \
+        -e 'PreInit returned 2 for "<default' -e 'Please also check' | tail -n 10 >&2
+    echo "full log: $state/Xorg.$display.log" >&2
+}
+
 # wait for the server's socket
 n=0
 while [ ! -e "/tmp/.X11-unix/X$display" ]; do
     if ! kill -0 "$server" 2>/dev/null; then
-        echo "startx: the X server stopped; see $state/Xorg.$display.log" >&2
+        echo "startx: the X server stopped" >&2
+        why
         exit 1
     fi
     n=$((n + 1))
     if [ "$n" -gt 30 ]; then
-        echo "startx: the X server did not start; see $state/Xorg.$display.log" >&2
+        echo "startx: the X server did not start in 30 seconds" >&2
+        why
         kill "$server" 2>/dev/null
         exit 1
     fi
