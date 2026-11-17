@@ -1,4 +1,4 @@
-timestamp: 1794903629
+timestamp: 1794919317
 
 name: bash
 version: 5.3
@@ -488,13 +488,13 @@ size: 76185
 sha256: e982c5383a5769189eb25262f6190d4c609cade64b61b1ee8cf2bce2e4a498b4
 
 name: xorg
-version: 21.1.26.4
+version: 21.1.26.5
 arch: x86_64
 description: X.Org X server with built-in modesetting and libinput drivers, keyboard layouts, startx
 config: etc/X11/xinit/xinitrc, etc/fonts/fonts.conf
-file: xorg-21.1.26.4.fpk
-size: 5309719
-sha256: 1223749e31023df85fa117758498c4ebd0e8ed6edc1438559c6c7cdaf6953a70
+file: xorg-21.1.26.5.fpk
+size: 5310129
+sha256: a07c9a33548360e0c503b4e6e44ed1069e485c7c67cd9d40fff81ca0c783238a
 
 name: xorg-gl
 version: 21.1.12-1
