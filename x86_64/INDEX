@@ -1,4 +1,4 @@
-timestamp: 1794921565
+timestamp: 1794923463
 
 name: bash
 version: 5.3
@@ -69,14 +69,14 @@ size: 1165799
 sha256: 89f2e99c62bcc653d75db1aa74a06028fd8437f1ab685506de1859499fae8429
 
 name: dwm-1
-version: 6.8-1
+version: 6.8-2
 arch: x86_64
 description: dwm set up for Flint: gaps, Super keys, gold on black, JetBrains Mono, a status bar
 depends: xorg, dmenu, fonts-jetbrains-mono
 config-of: dwm
-file: dwm-1-6.8-1.fpk
-size: 1786280
-sha256: 9f0a321476f53b93dbba7fa822bed00a1e9b437cd084cc1ca5331450a51c23ab
+file: dwm-1-6.8-2.fpk
+size: 1786401
+sha256: 36dd8aa106b2508d70a346211b74d11f0fcb7ade744b27119225233538f96bac
 
 name: eza
 version: 0.23.5
