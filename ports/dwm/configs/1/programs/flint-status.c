@@ -126,11 +126,16 @@ static void cpu(char *buf, size_t n)
 	prev_total = total;
 }
 
+/* Memory in use, counted as htop and free count it: total - free - buffers - page cache
+ * (cache and reclaimable kernel caches are given back on demand; shared memory and tmpfs
+ * are counted as used). Not total - MemAvailable: MemAvailable also leaves out the free
+ * memory the kernel holds in reserve, which grows with the RAM installed and would show a
+ * few hundred MB that nothing is using. */
 static void memory(char *buf, size_t n)
 {
 	FILE *f = fopen("/proc/meminfo", "r");
 	char line[128];
-	unsigned long long total = 0, avail = 0, kb;
+	unsigned long long total = 0, free_ = 0, buffers = 0, cached = 0, srecl = 0, shmem = 0, kb;
 
 	*buf = 0;
 	if (!f)
@@ -138,12 +143,22 @@ static void memory(char *buf, size_t n)
 	while (fgets(line, sizeof line, f)) {
 		if (sscanf(line, "MemTotal: %llu kB", &kb) == 1)
 			total = kb;
-		else if (sscanf(line, "MemAvailable: %llu kB", &kb) == 1)
-			avail = kb;
+		else if (sscanf(line, "MemFree: %llu kB", &kb) == 1)
+			free_ = kb;
+		else if (sscanf(line, "Buffers: %llu kB", &kb) == 1)
+			buffers = kb;
+		else if (sscanf(line, "Cached: %llu kB", &kb) == 1)
+			cached = kb;
+		else if (sscanf(line, "SReclaimable: %llu kB", &kb) == 1)
+			srecl = kb;
+		else if (sscanf(line, "Shmem: %llu kB", &kb) == 1)
+			shmem = kb;
 	}
 	fclose(f);
 	if (total) {
-		unsigned long long used = (total - avail) / 1024;
+		unsigned long long cache = cached + srecl > shmem ? cached + srecl - shmem : 0;
+		unsigned long long gone = free_ + buffers + cache;
+		unsigned long long used = (total > gone ? total - gone : 0) / 1024;
 		if (used >= 1024)
 			snprintf(buf, n, "MEM %.1fG", used / 1024.0);
 		else

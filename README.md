@@ -83,7 +83,7 @@ is its Ed25519 signature. pkg installs nothing unless that signature matches a k
 |---|---|---|
 | xorg | 21.1.26.6 | X server with built-in modesetting and libinput drivers; `startx`, keyboard layouts |
 | dwm | 6.8 | dwm as suckless ships it (`config-of: dwm`) |
-| dwm-1 | 6.8-1 | configuration 1 of dwm: gaps, Super keys, gold on black, status bar |
+| dwm-1 | 6.8-2 | configuration 1 of dwm: gaps, Super keys, gold on black, status bar |
 | st | 0.9.3 | st as suckless ships it (`config-of: st`) |
 | st-1 | 0.9.3 | configuration 1 of st: scrollback, JetBrains Mono and Flint's colors |
 | dmenu | 5.4 | menu and program launcher |
